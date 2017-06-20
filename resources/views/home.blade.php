@@ -1,17 +1,25 @@
-@extends('layouts.app')
+@extends('layouts.principal')
 
-@section('content')
-<div class="container">
+@section('contenido')
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+        <div class="col-md-2 sidebar">
+            <h4 class="color-rosa text-uppercase text-center">Hola {{ Auth::user()->name }}</h4>
+            <img src="{{ url('img/profile.ico') }}" alt="" class="img-circle center-block">
+            <hr>
 
-                <div class="panel-body">
-                    You are logged in!
-                </div>
+            <div class="list-group">
+                <a href="#" class="list-group">prueba</a>
+                <a href="#" class="list-group">prueba</a>
+                <a href="#" class="list-group">prueba</a>
+                <a href="#" class="list-group">prueba</a>
+                <a href="#" class="list-group">prueba</a>
+            </div>
+             <div class="text-center">
+                <a href="#">Salir</a>
+
             </div>
         </div>
+        <div class="col-md-8"> 
+        </div>
     </div>
-</div>
 @endsection

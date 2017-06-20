@@ -1,0 +1,40 @@
+body{
+	background-color: #c4ccd2;
+	overflow: auto;
+}
+
+.panel-reglog{
+	margin-top: 10em;
+	background:rgba(255,255,255,0.5);
+}
+
+#panel-login h4{
+	font-weight: bold;
+}
+.color-rosa{
+	color: #96666e;
+	font-weight: bold;
+}
+.btn-rosa{
+	background-color: #db6b7e;
+	color: white;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.sidebar{
+	height: 100vh;
+	top: 0;
+	left: 0;
+	padding: 0;
+	background-color: #3F3F63;
+	overflow: auto;
+}
+.sidebar img{
+	height: 200px;
+	border: 2px solid white;
+	background-color: #999999;
+}
+.sidebar .list-group{
+	padding: 0;
+	background-color: #3F3f40;
+}
