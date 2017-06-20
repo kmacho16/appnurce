@@ -1,0 +1,23 @@
+body{
+	background-image: url("../img/fondo.jpg");
+	background-position: center;
+	background-size: cover;
+}
+
+.panel-reglog{
+	margin-top: 10em;
+	background:rgba(255,255,255,0.5);
+}
+
+#panel-login h4{
+	font-weight: bold;
+}
+.color-rosa{
+	color: #96666e;
+}
+.btn-rosa{
+	background-color: #db6b7e;
+	color: white;
+	text-transform: uppercase;
+	font-weight: bold;
+}
