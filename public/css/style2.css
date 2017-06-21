@@ -34,7 +34,40 @@ body{
 	border: 2px solid white;
 	background-color: #999999;
 }
+
 .sidebar .list-group{
 	padding: 0;
 	background-color: #3F3f40;
 }
+
+.sidebar .list-group .list-group-item,
+.sidebar .list-group .list-group-item:focus{
+	background-color: #3F3F63;
+	color: #b6b4c1;
+	border: 0;
+	padding-left: 60px;
+	padding-right: 30px;
+}
+
+.sidebar .list-group .list-group-item .active,
+.sidebar .list-group .list-group-item:hover{
+	background-color: #383957;
+	color: #e0deeb;
+	border: 0;
+}
+
+.sidebar .list-group .list-group-item:first-child{
+	
+}
+
+.sidebar .list-group .list-group-item .badge,
+.sidebar .list-group .list-group-item .active .badge{
+	background-color: #EE5462;
+	color: #e0deeb;
+}
+
+/*SIDEBAR LOGOUT*/
+
+.sidebar > div:last-child .btn{
+	width: 100%;
+}; 
