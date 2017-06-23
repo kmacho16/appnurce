@@ -7,6 +7,7 @@
     {!!Html::style('css/font-awesome.min.css')!!}
     {!!Html::style('css/style.css')!!}
     {!!Html::script('js/jquery.min.js')!!}
+     
 </head>
 <body>
 	<div class="container">

@@ -1,19 +1,57 @@
-body{
-	background-color: #c4ccd2;
-	overflow: auto;
-}
+.navbar-bran {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    text-align: center;
+    margin: 10px auto;
+    font-size: 1.2em;
+    text-transform: uppercase;
 
-.panel-reglog{
-	margin-top: 10em;
-	background:rgba(255,255,255,0.5);
-}
-
-#panel-login h4{
-	font-weight: bold;
 }
 .color-rosa{
 	color: #96666e;
-	font-weight: bold;
+}
+.color-rosa:hover{
+	color: #96666e;
+	text-decoration: none;
+}
+#side-menu {
+
+}
+.sidebar ul li{
+	border: 0;
+}
+.nav>li>a{
+	border: 0;
+	color: #96666e;
+	font-size: 1.3em;
+}
+.contenido{
+	margin-top: 26px;
+}
+.navbar-static-top{
+	background-color: #e0b7b7;
+	border:0;
+}
+body,.sidebar {
+	background-color: #ebbfbf;
+}
+.sidebar{
+	margin-top: 55px;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #eca5a5;
+}
+#page-wrapper{
+	border-radius: 20px;
+	margin: 10px 10px 10px 260px;
+}
+.sidebar ul li a.active{
+	text-decoration: none;
+    background-color: #eca5a5;
 }
 .btn-rosa{
 	background-color: #db6b7e;
@@ -21,53 +59,3 @@ body{
 	text-transform: uppercase;
 	font-weight: bold;
 }
-.sidebar{
-	height: 100vh;
-	top: 0;
-	left: 0;
-	padding: 0;
-	background-color: #3F3F63;
-	overflow: auto;
-}
-.sidebar img{
-	height: 200px;
-	border: 2px solid white;
-	background-color: #999999;
-}
-
-.sidebar .list-group{
-	padding: 0;
-	background-color: #3F3f40;
-}
-
-.sidebar .list-group .list-group-item,
-.sidebar .list-group .list-group-item:focus{
-	background-color: #3F3F63;
-	color: #b6b4c1;
-	border: 0;
-	padding-left: 60px;
-	padding-right: 30px;
-}
-
-.sidebar .list-group .list-group-item .active,
-.sidebar .list-group .list-group-item:hover{
-	background-color: #383957;
-	color: #e0deeb;
-	border: 0;
-}
-
-.sidebar .list-group .list-group-item:first-child{
-	
-}
-
-.sidebar .list-group .list-group-item .badge,
-.sidebar .list-group .list-group-item .active .badge{
-	background-color: #EE5462;
-	color: #e0deeb;
-}
-
-/*SIDEBAR LOGOUT*/
-
-.sidebar > div:last-child .btn{
-	width: 100%;
-}; 
