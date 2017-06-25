@@ -23,9 +23,15 @@
 		
 		{!!Form::label('telefono', 'Telefono: ')!!}
 		{!!Form::text('telefono',null,['class'=>'form-control','placeholder'=>'Ingrese su telefono aqui'])!!}
+		
+		{!!Form::label('id_rol', 'Seleccione rol de usuario: ')!!}
+		{!!Form::select('id_rol',$roles,null,['class'=>'form-control','placeholder'=>'Seleccione rol de su usuario'])!!}
+
 		{!!Form::file('foto_perfil',array('id'=>'miImagenInput','style'=>'display:none'))!!}
 		{{-- {!!Form::file('image',array('id'=>'miImagenInput','style'=>'display:none'))!!}
-		 --}}<hr>
+		 --}}
+
+		<hr>
 		{!!Form::label('email', 'Email: ')!!}
 		{!!Form::text('email',null,['class'=>'form-control','placeholder'=>'Ingrese su email aqui'])!!}
 

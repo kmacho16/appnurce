@@ -14,7 +14,7 @@
 
 <h4 class="color-rosa">Formulario registro</h4>
 <hr>
-	{!! Form::open(['route'=>['user.store'],'method'=>'Post','files'=>true]) !!}
+	{!! Form::open(['route'=>['usuarios.store'],'method'=>'Post','files'=>true]) !!}
 	<div class="group-control">
 		@include('users.forms.inputForm')
 	</div>

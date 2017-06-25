@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\User;
+use App\archivosUser;
+use DB;
 
 class UserController extends Controller
 {
@@ -22,10 +24,13 @@ class UserController extends Controller
     ];
 
 
-    public function index()
+    public function index(Request $request)
     {
-        $usuario = User::all();
-        return view("users.index",['user'=>$usuario]);
+        $usuario = User::searchMode($request->search,$request->type);
+        //$usuario = User::all();
+
+        $roles = DB::table('roles')->pluck('rol','id');
+        return view("users.index",['user'=>$usuario,'roles'=>$roles]);
     }
 
     /**
@@ -35,7 +40,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view("users.create");
+
+        $roles = DB::table('roles')->pluck('rol','id');
+        return view("users.create",['roles'=>$roles]);
     }
 
     /**
@@ -52,7 +59,9 @@ class UserController extends Controller
         $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
-        $user->telefono = $request->telefono;
+        $user->telefono = $request->telefono;        
+        $user->id_rol = $request->id_rol;
+
         if(empty($request->foto_perfil)){
             $user->foto_perfil = null;
         }else{
@@ -60,7 +69,7 @@ class UserController extends Controller
         }
 
         $user->save();
-        return redirect("user");
+        return redirect("usuarios");
     }
 
     /**
@@ -83,7 +92,12 @@ class UserController extends Controller
     public function edit($id)
     {
         $usuario  = User::find($id);
-        return view("users.edit",["usuario"=>$usuario]);
+        $userarc = archivosUser::where('id_user',$id)->orderby('id_campo','ASC')->get();
+        //$archivosUser = archivosUser::find());
+
+        $roles = DB::table('roles')->pluck('rol','id');
+
+        return view("users.edit",["usuario"=>$usuario,'archivos'=>$userarc,'roles'=>$roles]);
         
     }
 
@@ -101,7 +115,8 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
-        $user->telefono = $request->telefono;
+        $user->telefono = $request->telefono;        
+        $user->id_rol = $request->id_rol;
 
         if (empty($request->password)) {
             $user->password = $user->password;
@@ -114,8 +129,11 @@ class UserController extends Controller
         }else{
             $user->foto_perfil = $request->file('foto_perfil')->store('usuarios'); 
         }
+
+
+
         $user->save();
-        return redirect("user");
+        return redirect("usuarios");
     }
 
     /**
@@ -126,11 +144,40 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $usuario = User::find($id);
+        $usuario->delete();
+        return redirect("usuarios");
     }
 
 
     public function editProfile(){
-        return view("users.edit");
+        return view("usuarios.edit");
+    }
+
+    public function files(Request $request,$id){
+        for ($i=1; $i <=6 ; $i++) {
+            if (!empty($request->file("documento$i"))){
+                $userarc = archivosUser::where('id_campo',$id.''.$i)->first();
+                if(empty($userarc)){
+                    $userarc1 = new archivosUser();
+                    $userarc1->id_user = $id;
+                    $userarc1->id_campo = $id.''.$i;
+                    $userarc1->ruta = $request->file("documento$i")->store("documentos/$id");
+                    $userarc1->save();
+                }else{
+                    $userarc2 = archivosUser::find($userarc->id);
+                    $userarc2->ruta = $request->file("documento$i")->store("documentos/$id");
+                    $userarc2->save();
+                }
+            }
+        }
+        return back()->with('mensajes','Documentos actualizados correctamente');
+    }
+
+    public function filesDestroy($id_campo){
+        $archivo = archivosUser::where('id_campo',$id_campo)->first();
+        //$archivo = archivosUser::find($userarc->id);
+        $archivo->delete();
+        return back()->with('mensajes','Documentos Eliminados correctamente');
     }
 }

@@ -18,5 +18,9 @@ Route::get('/', function () {
 Auth::routes();	
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('/user','UserController');
+Route::resource('/usuarios','UserController');
+
+/*********USERS**************/
 Route::get('perfil','UserController@editProfile');
+Route::post('filesUser/{id}','UserController@files');
+Route::delete('filesUserDestroy/{id_campo}','UserController@filesDestroy');
