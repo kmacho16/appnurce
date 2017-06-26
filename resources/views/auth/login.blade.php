@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.Log')
 
 @section('contenido')
     <div class="row">

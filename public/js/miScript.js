@@ -91,4 +91,121 @@ function confirmarEliminar(btn){
 	$("#"+btn).click();
 	}
 }
+/********************************************/
+var map;
 
+/*function localizame(){
+	if(navigator.geolocation){
+		navigator.geolocation.getCurrentPosition(coordenadas);
+	}else{
+		alert('Oops! Tu navegador no soporta geolocalización. Bájate Chrome, que es gratis!');
+	}
+}
+
+function errores(err) {
+    if (err.code == 0) {
+      alert("Oops! Algo ha salido mal");
+    }
+    if (err.code == 1) {
+      alert("Oops! No has aceptado compartir tu posición");
+    }
+    if (err.code == 2) {
+      alert("Oops! No se puede obtener la posición actual");
+    }
+    if (err.code == 3) {
+      alert("Oops! Hemos superado el tiempo de espera");
+    }
+}
+
+function coordenadas(){
+	var latitud = position.coords.latitude;
+	var longitud = position.coords.longitude;
+}*/
+var mlat = 4.4734284;
+var mlgn =  -74.1181233;
+
+function initMap() {
+
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 4.4734284, lng: -74.1181233},
+      zoom: 15
+    });
+    	$("#latitud").val(4.4734284);
+    	$("#longitud").val(-74.1181233);
+
+    var marker = new google.maps.Marker({
+          position:  {lat: 4.4734284, lng: -74.1181233},
+          map: map,
+          draggable:true,
+          icon:"https://cdn2.iconfinder.com/data/icons/snipicons/500/map-marker-128.png",
+          title: 'Click to zoom'
+        });
+
+       
+
+      
+        google.maps.event.addListener(marker, 'drag', function() { 
+        	$("#latitud").val(this.getPosition().lat());
+        	$("#longitud").val(this.getPosition().lng());
+        } );
+
+        $("button").click(function(){
+
+        	$("#map").css({'height':'500px'});
+        	var mlat = $("#lat").val();
+        	var mlng = $("#lng").val();
+        	var location = new google.maps.LatLng(mlat,mlng);
+        	map = new google.maps.Map(document.getElementById('map'), {
+		      center: location,
+		      zoom: 15
+		    });
+
+		  var marker = new google.maps.Marker({
+          position:  location,
+          map: map,
+          draggable:false,
+          icon:"https://cdn2.iconfinder.com/data/icons/snipicons/500/map-marker-128.png",
+          title: 'Click to zoom'
+        });
+        });
+
+
+
+   
+
+
+
+     // Try HTML5 geolocation.
+     /*if (navigator.geolocation) {
+       navigator.geolocation.getCurrentPosition(function(position) {
+         var pos = {
+           lat: position.coords.latitude,
+           lng: position.coords.longitude
+         };
+
+         infoWindow.setPosition(pos);
+         infoWindow.setContent('Location found.');
+         map.setCenter(pos);
+       }, function() {
+         handleLocationError(true, infoWindow, map.getCenter());
+       });
+     } else {
+       // Browser doesn't support Geolocation
+       handleLocationError(false, infoWindow, map.getCenter());
+     }
+      var infoWindow = new google.maps.InfoWindow({map: map});*/
+  }
+ 
+
+ 
+
+    
+   
+
+/*   function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+     infoWindow.setPosition(pos);
+     infoWindow.setContent(browserHasGeolocation ?
+                           'Error: The Geolocation service failed.' :
+                           'Error: Your browser doesn\'t support geolocation.');
+   }
+*/

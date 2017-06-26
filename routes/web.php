@@ -18,7 +18,10 @@ Route::get('/', function () {
 Auth::routes();	
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
 Route::resource('/usuarios','UserController');
+Route::resource('/ubicaciones','ubicacionesController');
 
 /*********USERS**************/
 Route::get('perfil','UserController@editProfile');

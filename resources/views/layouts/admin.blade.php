@@ -39,15 +39,15 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="{{ url('/logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();"><i class="fa fa-sign-out fa-fw"></i> 
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
+                        <li>
+                        <a href="{{ url('/logout') }}" 
+                        onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                            <i class="fa fa-sign-out fa-fw"></i> 
+                                Logout
+                        </a>
+                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
                         </li>
                     </ul>
                 </li>
@@ -71,10 +71,10 @@
                             <a href="#"><i class="fa fa-globe fa-fw"></i> Mis ubicaciones<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="#"><i class='fa fa-plus fa-fw'></i> Agregar</a>
+                                    <a href="{!!  route('ubicaciones.create')  !!}"><i class='fa fa-plus fa-fw'></i> Agregar</a>
                                 </li>
                                 <li>
-                                    <a href="#"><i class='fa fa-map-marker fa-fw'></i> Ubicaciones</a>
+                                    <a href="{!!  route('ubicaciones.index')  !!}"><i class='fa fa-map-marker fa-fw'></i> Ubicaciones</a>
                                 </li>
                             </ul>
                         </li>
@@ -110,5 +110,7 @@
     {!!Html::script('js/metisMenu.min.js')!!}
     {!!Html::script('js/sb-admin-2.js')!!}
     {!!Html::script('js/miScript.js')!!}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjtPdNSeeVGUgaaL8a7MN5yG4ZETeQeq4&callback=initMap"
+    async defer></script>
 </body>
 </html>
