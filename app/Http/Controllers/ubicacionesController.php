@@ -17,7 +17,7 @@ class ubicacionesController extends Controller
     public function index()
     {
         $misUbicaciones = ubicaciones::where('id_user',Auth::user()->id)->get();
-        return view('ubicaciones.index',['ubicaciones'=>$misUbicaciones]);
+        return view('ubicaciones.create',['ubicaciones'=>$misUbicaciones]);
     }
 
     /**
@@ -28,7 +28,8 @@ class ubicacionesController extends Controller
     public function create()
     {
         
-        return view('ubicaciones.create');
+        $misUbicaciones = ubicaciones::where('id_user',Auth::user()->id)->get();
+        return view('ubicaciones.create',['ubicaciones'=>$misUbicaciones]);
     }
 
     /**
@@ -69,7 +70,8 @@ class ubicacionesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $miUbicacion = ubicaciones::find($id);
+        return view('ubicaciones.edit',['ubicacion'=>$miUbicacion]);
     }
 
     /**
@@ -81,7 +83,13 @@ class ubicacionesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $ubicacion = ubicaciones::find($id);
+        $ubicacion->latitud = $request->latitud;
+        $ubicacion->longitud = $request->longitud;        
+        $ubicacion->nombre = $request->nombre;
+        $ubicacion->save();
+
+        return redirect('ubicaciones');
     }
 
     /**
@@ -92,6 +100,8 @@ class ubicacionesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ubicacion = ubicaciones::find($id);
+        $ubicacion->delete();
+        return redirect("ubicaciones");
     }
 }

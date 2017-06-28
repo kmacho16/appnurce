@@ -121,20 +121,28 @@ function coordenadas(){
 	var latitud = position.coords.latitude;
 	var longitud = position.coords.longitude;
 }*/
-var mlat = 4.4734284;
-var mlgn =  -74.1181233;
+/*$("#btn_nueva").fadeOut();
+$("#form_ubicacion").fadeIn();*/
+
+$("#btn_nueva").fadeOut();
+$("#nomb_direccion").prop("disabled",false);
+$("#btn_direccion").prop("disabled",false);
 
 function initMap() {
 
+	var mlat = $('#latitud').val();
+	var mlng = $('#longitud').val();
+
+	var location = new google.maps.LatLng(mlat,mlng);
+
     map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 4.4734284, lng: -74.1181233},
+      center: location,
       zoom: 15
     });
-    	$("#latitud").val(4.4734284);
-    	$("#longitud").val(-74.1181233);
+
 
     var marker = new google.maps.Marker({
-          position:  {lat: 4.4734284, lng: -74.1181233},
+          position: location,
           map: map,
           draggable:true,
           icon:"https://cdn2.iconfinder.com/data/icons/snipicons/500/map-marker-128.png",
@@ -149,29 +157,45 @@ function initMap() {
         	$("#longitud").val(this.getPosition().lng());
         } );
 
-        $("button").click(function(){
+        $("#posicion #otro").click(function(e){
+			/*alert($(this).find('#lat').val());
+			alert($(this).find('#lng').val());*/
+			e.preventDefault();
+			/*$("#btn_nueva").fadeIn();
+			$("#form_ubicacion").fadeOut();*/
 
-        	$("#map").css({'height':'500px'});
-        	var mlat = $("#lat").val();
-        	var mlng = $("#lng").val();
-        	var location = new google.maps.LatLng(mlat,mlng);
-        	map = new google.maps.Map(document.getElementById('map'), {
-		      center: location,
-		      zoom: 15
-		    });
-
-		  var marker = new google.maps.Marker({
-          position:  location,
-          map: map,
-          draggable:false,
-          icon:"https://cdn2.iconfinder.com/data/icons/snipicons/500/map-marker-128.png",
-          title: 'Click to zoom'
-        });
-        });
+			$("#btn_nueva").fadeIn();
+			$("#nomb_direccion").prop("disabled",true);
+			$("#btn_direccion").prop("disabled",true);
 
 
 
-   
+			var mlat = $(this).find('#lat').val();
+			var mlng = $(this).find('#lng').val();
+			$("#btn_act_posicion").css('visibility','visible');
+			var location = new google.maps.LatLng(mlat,mlng);
+			map.setCenter(location);
+			marker.setPosition(location);
+			marker.setDraggable(false);
+		});
+
+		$("#btn_nueva").click(function(e){
+			/*alert($(this).find('#lat').val());
+			alert($(this).find('#lng').val());*/
+			e.preventDefault();
+			/*$("#btn_nueva").fadeOut();
+			$("#form_ubicacion").fadeIn();*/
+
+			$("#btn_nueva").fadeOut();
+$("#nomb_direccion").prop("disabled",false);
+$("#btn_direccion").prop("disabled",false);
+			var location = new google.maps.LatLng(4.677396568627247,-74.08310437910154);
+			map.setCenter(location);
+			marker.setPosition(location);
+			marker.setDraggable(true);
+		});
+
+      
 
 
 
@@ -195,11 +219,18 @@ function initMap() {
      }
       var infoWindow = new google.maps.InfoWindow({map: map});*/
   }
- 
+/* 
+$("#posicion").click(function(){
+	alert($(this).find('#lat').val());
+	alert($(this).find('#lng').val());
 
- 
+	var mlat = $(this).find('#lat').val();
+	var mlng = $(this).find('#lng').val();
+	var location = new google.maps.LatLng(mlat,mlng);
+	map.setCenter(location);
+	marker.setPosition(location);
+});*/
 
-    
    
 
 /*   function handleLocationError(browserHasGeolocation, infoWindow, pos) {
