@@ -23,6 +23,12 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('/usuarios','UserController');
 Route::resource('/ubicaciones','ubicacionesController');
 
+Route::get('/ubicacion/{id}','ubicacionesController@createLocation');
+Route::post('/ubicacionStore/{id}','ubicacionesController@storeLocation');
+Route::get('/ubicacionEdit/{id}','ubicacionesController@editLocation');
+
+Route::post('/ubicacionFind','ubicacionesController@ubicacionesFind');
+
 /*********USERS**************/
 Route::get('perfil','UserController@editProfile');
 Route::post('filesUser/{id}','UserController@files');

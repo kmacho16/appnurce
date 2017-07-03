@@ -128,20 +128,28 @@ $("#btn_nueva").fadeOut();
 $("#nomb_direccion").prop("disabled",false);
 $("#btn_direccion").prop("disabled",false);
 
+
 function initMap() {
 
+	var marcadores =[];
 	var mlat = $('#latitud').val();
 	var mlng = $('#longitud').val();
 
 	var location = new google.maps.LatLng(mlat,mlng);
 
-    map = new google.maps.Map(document.getElementById('map'), {
+    var map = new google.maps.Map(document.getElementById('map'), {
       center: location,
-      zoom: 15
+      zoom: 11
     });
+    /*var map = new GMaps({
+      div: '#map',
+      zoom: 11,
+      center: location,
+    });*/
 
+    
 
-    var marker = new google.maps.Marker({
+     var marker =new google.maps.Marker({
           position: location,
           map: map,
           draggable:true,
@@ -149,94 +157,99 @@ function initMap() {
           title: 'Click to zoom'
         });
 
-       
+  /* var marker = map.addMarker({
+      position:location,
+      icon: "https://cdn2.iconfinder.com/data/icons/snipicons/500/map-marker-128.png",
+      draggable:true,
+      click: function(e) {
+        alert('You clicked in this marker');
+      }
+    });*/
 
-      
+    /*var cityCircle = new google.maps.Circle({
+	            strokeColor: '#FF0000',
+	            strokeOpacity: 0.8,
+	            strokeWeight: 2,
+	            fillColor: '#FF0000',
+	            fillOpacity: 0.35,
+	            map: map,
+	            center: location,
+	            radius: 600
+	          });
+*/
+    
+
+    function cargarPuntos(){
+		for (var i=0; i < misUbicaciones.data.length; i++) {
+	    	//console.log("hola");
+	    	location = new google.maps.LatLng(misUbicaciones.data[i].latitud,misUbicaciones.data[i].longitud);
+	    	var markers  = new google.maps.Marker({
+	    		position: location,
+	    		map:map, 
+	    		draggable:false,
+	    	});
+
+	    	/*var markers = map.addMarker({
+	    	      position:location,
+	    	      icon: "https://docs.joeworkman.net/assets/rapidweaver/stacks/google-maps/google-maps@128.png",
+	    	      draggable:false
+	    	    });*/
+	    	marcadores.push(markers);
+	    	console.log(misUbicaciones.data[i].latitud+" - "+misUbicaciones.data[i].longitud);
+	    }
+    }
+
+
+
+
+    if(typeof(misUbicaciones)!="undefined"){
+    	cargarPuntos();
+    }
+      	
+
         google.maps.event.addListener(marker, 'drag', function() { 
         	$("#latitud").val(this.getPosition().lat());
         	$("#longitud").val(this.getPosition().lng());
-        } );
+        	$("#latBus").val(this.getPosition().lat());
+        	$("#lngBus").val(this.getPosition().lng());
+        	var location = new google.maps.LatLng(this.getPosition().lat(),this.getPosition().lng());
+        });
 
         $("#posicion #otro").click(function(e){
-			/*alert($(this).find('#lat').val());
-			alert($(this).find('#lng').val());*/
+        	for (var i=0; i < marcadores.length; i++) {
+        		marcadores[i].setMap(null);
+        	}
 			e.preventDefault();
-			/*$("#btn_nueva").fadeIn();
-			$("#form_ubicacion").fadeOut();*/
 
 			$("#btn_nueva").fadeIn();
 			$("#nomb_direccion").prop("disabled",true);
 			$("#btn_direccion").prop("disabled",true);
-
-
-
 			var mlat = $(this).find('#lat').val();
 			var mlng = $(this).find('#lng').val();
 			$("#btn_act_posicion").css('visibility','visible');
-			var location = new google.maps.LatLng(mlat,mlng);
+			location = new google.maps.LatLng(mlat,mlng);
+			
+			console.log(location);
 			map.setCenter(location);
 			marker.setPosition(location);
+			marker.setIcon("https://docs.joeworkman.net/assets/rapidweaver/stacks/google-maps/google-maps@128.png");
 			marker.setDraggable(false);
 		});
 
 		$("#btn_nueva").click(function(e){
-			/*alert($(this).find('#lat').val());
-			alert($(this).find('#lng').val());*/
+			for (var i=0; i < marcadores.length; i++) {
+        		marcadores[i].setMap(map);
+        	}
 			e.preventDefault();
-			/*$("#btn_nueva").fadeOut();
-			$("#form_ubicacion").fadeIn();*/
 
 			$("#btn_nueva").fadeOut();
-$("#nomb_direccion").prop("disabled",false);
-$("#btn_direccion").prop("disabled",false);
+			$("#nomb_direccion").prop("disabled",false);
+			$("#btn_direccion").prop("disabled",false);
 			var location = new google.maps.LatLng(4.677396568627247,-74.08310437910154);
 			map.setCenter(location);
 			marker.setPosition(location);
+			marker.setIcon("https://cdn2.iconfinder.com/data/icons/snipicons/500/map-marker-128.png");
 			marker.setDraggable(true);
+
 		});
-
-      
-
-
-
-     // Try HTML5 geolocation.
-     /*if (navigator.geolocation) {
-       navigator.geolocation.getCurrentPosition(function(position) {
-         var pos = {
-           lat: position.coords.latitude,
-           lng: position.coords.longitude
-         };
-
-         infoWindow.setPosition(pos);
-         infoWindow.setContent('Location found.');
-         map.setCenter(pos);
-       }, function() {
-         handleLocationError(true, infoWindow, map.getCenter());
-       });
-     } else {
-       // Browser doesn't support Geolocation
-       handleLocationError(false, infoWindow, map.getCenter());
-     }
-      var infoWindow = new google.maps.InfoWindow({map: map});*/
   }
-/* 
-$("#posicion").click(function(){
-	alert($(this).find('#lat').val());
-	alert($(this).find('#lng').val());
-
-	var mlat = $(this).find('#lat').val();
-	var mlng = $(this).find('#lng').val();
-	var location = new google.maps.LatLng(mlat,mlng);
-	map.setCenter(location);
-	marker.setPosition(location);
-});*/
-
-   
-
-/*   function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-     infoWindow.setPosition(pos);
-     infoWindow.setContent(browserHasGeolocation ?
-                           'Error: The Geolocation service failed.' :
-                           'Error: Your browser doesn\'t support geolocation.');
-   }
-*/

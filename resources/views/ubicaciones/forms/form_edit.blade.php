@@ -1,8 +1,4 @@
-<script>
-	$("document").ready(function(){
-		alert("hola");
-	});
-</script>
+
 <h3 class="text-center text-uppercase color-rosa">Posicion</h3>
 {!! Form::model($ubicacion,['route'=>['ubicaciones.update',$ubicacion->id],'method'=>'PUT']) !!}
 	{!!Form::text('nombre',null,['class'=>'form-control','placeholder'=>'Ingrese nombre de la direccion','required'=>true])!!}

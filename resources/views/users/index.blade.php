@@ -34,8 +34,11 @@
 			<td>{{ $usuario->last_name }}</td>
 			<td>{{ $usuario->email }}</td>
 			<td>{{ $usuario->telefono }}</td>
-			<td><button class="btn btn-danger" onclick="confirmarEliminar('eliminar{{ $usuario->id }}')">Eliminar</button> 
-			{!! link_to_route('usuarios.edit',$title="Editar",$parameters = $usuario->id,$attributes=['class'=>'btn btn-warning']) !!}
+			<td>
+			{!! link_to_route('usuarios.edit'," Editar",$parameters = $usuario->id,$attributes=['class'=>'fa fa-gear']) !!}
+			<button class="btn btn-danger" onclick="confirmarEliminar('eliminar{{ $usuario->id }}')"><i class="fa fa-times"></i></button>
+
+			<a href="{{ url('ubicacion',$usuario->id) }}" class="btn btn-success" ><i class="fa fa-map"></i></a>
 			</td>	
 			{!!Form::open(['route'=>['usuarios.destroy',$usuario->id],'method'=>'DELETE'])!!}
 				{!!Form::submit('Eliminar',['style'=>'display:none','id'=>'eliminar'.$usuario->id])!!}

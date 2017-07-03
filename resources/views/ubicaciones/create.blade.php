@@ -3,24 +3,21 @@
 	<div  class="col-md-9" >
 		<div id="map" style="height: 500px; border:0px solid red;border-radius: 15px;">
 		</div>
-		
 	</div>
 	<div class="col-md-3">
 		<div class="form-group" id="form_ubicacion">
+		@if (@isset ($id_user))
+			@include('ubicaciones.forms.form_create_location')
+		@else
 			@include('ubicaciones.forms.form_create')
+		@endif
 		</div>
-
-	
-
 		<hr>
 		<a href="#" class="thumbnail text-center" id="btn_nueva">
 			<i class="fa fa-plus fa-fw"></i>
 			<strong>Nueva</strong>
 		</a>
 		<h5 class="color-rosa text-center text-uppercase">Tus lugares guardados</h5>
-
-		
-
 		@foreach ($ubicaciones as $ubicacion)
 
 		<div id="posicion">
@@ -37,10 +34,7 @@
 			    </div>
 			  </div>
 			</form>
-{{-- 
-			<a id="otro" href="#"  data-toggle="collapse" data-target="#collapse{{ $ubicacion->id }}">
-			
-				
+			{{--<a id="otro" href="#"  data-toggle="collapse" data-target="#collapse{{ $ubicacion->id }}">
 			</a> --}}
 			<div id="collapse{{ $ubicacion->id }}" class="collapse panel panel-default" style="padding:10px;">
 				<i class='fa fa-edit fa-fw'></i>{!! link_to_route("ubicaciones.edit",$title=" Actualizar ubicacion",$parameters = $ubicacion->id) !!} <br>
@@ -52,6 +46,10 @@
 			{!!Form::close()!!}
 		<br>
 		@endforeach
+		{{ $ubicaciones->links() }}
+		<script>
+			var misUbicaciones = {!! json_encode($ubicaciones) !!};
+		</script>
 	</div>
 
 
