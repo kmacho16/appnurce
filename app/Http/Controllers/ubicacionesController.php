@@ -133,9 +133,9 @@ class ubicacionesController extends Controller
     public function ubicacionesFind(Request $request){
         $lat= $request->latBus;
         $lng=$request->lngBus;
-        $distance = 10;
+        $distance = $radio = $request->radio;
         $box = $this->getBoundaries($lat,$lng,$distance);
-        $ubicaciones =DB::select("select users.name,nombre,id_user,latitud,longitud,min(6371 * ACOS( 
+        $ubicaciones =DB::select("select ubicaciones.id,users.name,nombre,id_user,latitud,longitud,(6371 * ACOS( 
                                             SIN(RADIANS(latitud)) 
                                             * SIN(RADIANS(?)) 
                                             + COS(RADIANS(longitud - ?)) 
@@ -146,10 +146,9 @@ class ubicacionesController extends Controller
                                from ubicaciones inner join users on ubicaciones.id_user  = users.id
                                where (latitud between ? and ? )
                                and (longitud between ? and ? )
-                               GROUP BY id_user
                                having distancia < ? 
                                order by distancia ASC",[$lat,$lng,$lat,$box['min_lat'],$box['max_lat'],$box['min_lng'],$box['max_lng'],$distance]);//DESActive el STRICT
-        return $ubicaciones;
+        return view('ubicaciones.find',['lat'=>$lat,'lng'=>$lng,'radio'=>$radio,'ubicacionesFind'=>$ubicaciones]);
     }
 
     public function getBoundaries($lat,$lng,$distance = 1, $eartradious = 6371){

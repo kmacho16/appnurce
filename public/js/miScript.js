@@ -1,6 +1,7 @@
 $('#miImagenInput').change(function(){
 	LeerURL(this);
 });
+
 function LeerURL(input){
 	if(input.files && input.files[0]){
 		var reader = new FileReader();
@@ -92,8 +93,6 @@ function confirmarEliminar(btn){
 	}
 }
 /********************************************/
-var map;
-
 /*function localizame(){
 	if(navigator.geolocation){
 		navigator.geolocation.getCurrentPosition(coordenadas);
@@ -134,80 +133,43 @@ function initMap() {
 	var marcadores =[];
 	var mlat = $('#latitud').val();
 	var mlng = $('#longitud').val();
-
-	var location = new google.maps.LatLng(mlat,mlng);
+	var location = new google.maps.LatLng(mlat,mlng);	
+    var infowindow = new google.maps.InfoWindow();
+    var cityCircle = new google.maps.Circle();
 
     var map = new google.maps.Map(document.getElementById('map'), {
       center: location,
-      zoom: 11
+      zoom: 15
     });
-    /*var map = new GMaps({
-      div: '#map',
-      zoom: 11,
-      center: location,
-    });*/
 
-    
+    var iconPrincipal = {
+        url:"../img/iconoMarker.png", // url
+        scaledSize: new google.maps.Size(42, 70), // scaled size
+    };
 
-     var marker =new google.maps.Marker({
-          position: location,
-          map: map,
-          draggable:true,
-          icon:"https://cdn2.iconfinder.com/data/icons/snipicons/500/map-marker-128.png",
-          title: 'Click to zoom'
-        });
-
-  /* var marker = map.addMarker({
-      position:location,
-      icon: "https://cdn2.iconfinder.com/data/icons/snipicons/500/map-marker-128.png",
-      draggable:true,
-      click: function(e) {
-        alert('You clicked in this marker');
-      }
-    });*/
-
-    /*var cityCircle = new google.maps.Circle({
-	            strokeColor: '#FF0000',
-	            strokeOpacity: 0.8,
-	            strokeWeight: 2,
-	            fillColor: '#FF0000',
-	            fillOpacity: 0.35,
-	            map: map,
-	            center: location,
-	            radius: 600
-	          });
-*/
-    
-
-    function cargarPuntos(){
-		for (var i=0; i < misUbicaciones.data.length; i++) {
-	    	//console.log("hola");
-	    	location = new google.maps.LatLng(misUbicaciones.data[i].latitud,misUbicaciones.data[i].longitud);
-	    	var markers  = new google.maps.Marker({
-	    		position: location,
-	    		map:map, 
-	    		draggable:false,
-	    	});
-
-	    	/*var markers = map.addMarker({
-	    	      position:location,
-	    	      icon: "https://docs.joeworkman.net/assets/rapidweaver/stacks/google-maps/google-maps@128.png",
-	    	      draggable:false
-	    	    });*/
-	    	marcadores.push(markers);
-	    	console.log(misUbicaciones.data[i].latitud+" - "+misUbicaciones.data[i].longitud);
-	    }
+    var iconSecundario = {
+    	url:"../img/iconoLove.png", // url
+        scaledSize: new google.maps.Size(42, 65), // scaled size
+        /*origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(0, 0)*/ // anchor
     }
 
-
-
-
-    if(typeof(misUbicaciones)!="undefined"){
-    	cargarPuntos();
+    var iconoStar = {
+    	url:"../img/iconoStar.png", // url
+        scaledSize: new google.maps.Size(52, 75), // scaled size
+        /*origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(0, 0)*/ // anchor
     }
-      	
 
-        google.maps.event.addListener(marker, 'drag', function() { 
+	var marker =new google.maps.Marker({
+	      position: location,
+	      map: map,
+	      draggable:true,
+	      icon:iconPrincipal,
+	      title: 'Click to zoom'
+	    });
+
+ 	google.maps.event.addListener(marker, 'drag', function() { 
         	$("#latitud").val(this.getPosition().lat());
         	$("#longitud").val(this.getPosition().lng());
         	$("#latBus").val(this.getPosition().lat());
@@ -215,41 +177,176 @@ function initMap() {
         	var location = new google.maps.LatLng(this.getPosition().lat(),this.getPosition().lng());
         });
 
-        $("#posicion #otro").click(function(e){
-        	for (var i=0; i < marcadores.length; i++) {
-        		marcadores[i].setMap(null);
-        	}
-			e.preventDefault();
+    $("#posicion #otro").click(function(e){
+ 		$("#btn_nueva").fadeIn();
+		$("#nomb_direccion").prop("disabled",true);
+		$("#btn_direccion").prop("disabled",true);			
+		$("#btn_act_posicion").css('visibility','visible');
 
-			$("#btn_nueva").fadeIn();
-			$("#nomb_direccion").prop("disabled",true);
-			$("#btn_direccion").prop("disabled",true);
-			var mlat = $(this).find('#lat').val();
-			var mlng = $(this).find('#lng').val();
-			$("#btn_act_posicion").css('visibility','visible');
-			location = new google.maps.LatLng(mlat,mlng);
+     	for (var i=0; i < marcadores.length; i++) {
+     		marcadores[i].setMap(null);
+     	}
+     	marcadores.length=0;
+     	
+		e.preventDefault();
+		var mlat = $('#latitud').val();
+		var mlng = $('#longitud').val();
+		location = new google.maps.LatLng(mlat,mlng);
+		marker.setPosition(location);
+		marker.setDraggable(false);	
 			
-			console.log(location);
-			map.setCenter(location);
-			marker.setPosition(location);
-			marker.setIcon("https://docs.joeworkman.net/assets/rapidweaver/stacks/google-maps/google-maps@128.png");
-			marker.setDraggable(false);
-		});
+		var lugar_lat = $(this).find('#lat').val();
+		var lugar_lng = $(this).find('#lng').val();
+		location = new google.maps.LatLng(lugar_lat,lugar_lng);
+     	
+	    
+		var markers =new google.maps.Marker({
+	      position: location,
+	      map: map,
+	      icon:iconSecundario,
+	    });
+	    marcadores.push(markers);
+    	
 
-		$("#btn_nueva").click(function(e){
-			for (var i=0; i < marcadores.length; i++) {
-        		marcadores[i].setMap(map);
-        	}
-			e.preventDefault();
+		/*ENCUENTA PUNTO MEDIO PARA CENTRAR*/
+		x1 = parseFloat(mlat);
+		y1 = parseFloat(mlng);
+		x2 = parseFloat(lugar_lat);
+		y2 = parseFloat(lugar_lng);
+		center_lat = (x1+x2)/2;
+		center_lng = (y1+y2)/2;
+		location = new google.maps.LatLng(center_lat,center_lng);
+		map.setCenter(location);
+		map.setZoom(13);
+	});
 
-			$("#btn_nueva").fadeOut();
-			$("#nomb_direccion").prop("disabled",false);
-			$("#btn_direccion").prop("disabled",false);
-			var location = new google.maps.LatLng(4.677396568627247,-74.08310437910154);
-			map.setCenter(location);
-			marker.setPosition(location);
-			marker.setIcon("https://cdn2.iconfinder.com/data/icons/snipicons/500/map-marker-128.png");
-			marker.setDraggable(true);
 
-		});
-  }
+ 	$("#posicion #finds").click(function(e){
+	 	$("#btn_nueva").fadeIn();
+
+	 	for (var i=0; i < marcadores.length; i++) {
+	 		marcadores[i].setMap(null);
+	 		marcadores.length = 0;
+	 	}
+
+		e.preventDefault();
+		/*MARCADOR 1*/
+		var mlat = $('#latitud').val();
+		var mlng = $('#longitud').val();
+		var mradio = $('#radio').val();
+		var radio = mradio *1000;
+		location = new google.maps.LatLng(mlat,mlng);
+		marker.setPosition(location);
+		marker.setIcon(iconSecundario);
+		marker.setDraggable(false);
+
+		/*MARCADOR 2*/
+		var mlat = $(this).find('#lat').val();
+		var mlng = $(this).find('#lng').val();
+		location = new google.maps.LatLng(mlat,mlng);
+		map.setCenter(location);
+
+		var marker2 =new google.maps.Marker({
+		      position: location,
+		      map: map,
+		      draggable:false,
+		      icon:iconPrincipal,
+		    });
+	});
+
+	$("#btn_nueva").click(function(e){
+
+		$("#btn_nueva").fadeOut();
+		$("#nomb_direccion").prop("disabled",false);
+		$("#btn_direccion").prop("disabled",false);
+		e.preventDefault();
+
+		cargarPuntos();
+
+		var location = new google.maps.LatLng(4.677396568627247,-74.08310437910154);
+		map.setCenter(location);
+		marker.setPosition(location);
+		marker.setIcon(iconPrincipal);
+		marker.setDraggable(true);
+	});	
+
+ 	function dibujaCirculo (radius,location){
+		if(typeof(cityCircle)!="undefined"){
+    		cityCircle.setMap(null);
+    	}
+	 	cityCircle.setOptions({
+		            strokeColor: '#3291b1',
+		            strokeOpacity: 0.8,
+		            strokeWeight: 2,
+		            fillColor: '#383957',
+		            fillOpacity: 0.35,
+		            map: map,
+		            center: location,
+		            radius: radius
+		          });
+	 }
+  
+    /*CARGAR PUNTOS*/
+	if(typeof(misUbicaciones)!="undefined"){
+			cargarPuntos();
+		}
+    function cargarPuntos(){
+    	
+     	marcadores.length=0;
+		for (var i=0; i < misUbicaciones.data.length; i++) {
+	    	//console.log("hola");
+	    	location = new google.maps.LatLng(misUbicaciones.data[i].latitud,misUbicaciones.data[i].longitud);
+	    	var markers  = new google.maps.Marker({
+	    		position: location,
+	    		map:map, 
+	    		draggable:false,
+	    		icon:iconSecundario
+	    	});
+	    	marcadores.push(markers);
+	    	//console.log(misUbicaciones.data[i].latitud+" - "+misUbicaciones.data[i].longitud);
+	    }
+    }
+    /*FIN CARGAR PUNTOS*/
+
+	/*CARGAR PUNTOS FIND*/
+    if(typeof(findDirecciones)!="undefined"){
+    		cargarPuntosFind();
+    	}
+    function cargarPuntosFind(){
+    		map.setZoom(13);
+
+	    	var mlat = $('#latitud').val();
+			var mlng = $('#longitud').val();
+			var mradio = $('#radio').val();
+			var radio = mradio *1000;
+			location = new google.maps.LatLng(mlat,mlng);		
+			dibujaCirculo(radio,location);
+
+		for (var i=0; i < findDirecciones.length; i++) {
+	    	location = new google.maps.LatLng(findDirecciones[i].latitud,findDirecciones[i].longitud);
+	    	if(i==0){
+	    		icon = iconoStar;
+	    	}else{
+	    		icon = iconSecundario;
+	    	}
+	    	var markers  = new google.maps.Marker({
+	    		position: location,
+	    		map:map, 
+	    		draggable:false,
+	    		icon:icon
+	    	});
+
+	    	google.maps.event.addListener(markers, 'click', (function(markers, i) {
+	    	        return function() {
+	    	        	var dista = findDirecciones[i].distancia.toString().substring(0,3);
+	    	        	var nombre = findDirecciones[i].name;
+	    	        	infowindow.setContent("hola soy "+nombre+" me encuentro a  "+dista+"Km de distancia <a href='/usuarios/34/edit'>link</a> ");
+	    	        	infowindow.open(map, markers);
+	    	        }
+	    	      })(markers, i));
+	    	marcadores.push(markers);
+	    	//console.log(findDirecciones[i].latitud+" - "+findDirecciones[i].longitud);
+	    }
+    }
+	/*FIN CARGAR PUNTOS FIND*/
+}

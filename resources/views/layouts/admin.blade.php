@@ -100,8 +100,8 @@
         <div id="page-wrapper">
             @yield("contenido")
         </div>
-<p>SELECT id,id_user,nombre,latitud,longitud, (6371 * ACOS( SIN(RADIANS(latitud)) * SIN(RADIANS(4.702033048673515)) + COS(RADIANS(longitud - -74.143700845166)) * COS(RADIANS(latitud)) * COS(RADIANS(4.702033048673515)) ) ) AS Distancia from ubicaciones ORDER by Distancia ASC
-</p>
+{{-- <p>SELECT id,id_user,nombre,latitud,longitud, (6371 * ACOS( SIN(RADIANS(latitud)) * SIN(RADIANS(4.702033048673515)) + COS(RADIANS(longitud - -74.143700845166)) * COS(RADIANS(latitud)) * COS(RADIANS(4.702033048673515)) ) ) AS Distancia from ubicaciones ORDER by Distancia ASC
+</p> --}}
     </div>
     
 
