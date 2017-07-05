@@ -11,9 +11,13 @@
 |
 */
 
+
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/search','SearchController@index');
 
 Auth::routes();	
 
@@ -26,10 +30,9 @@ Route::resource('/ubicaciones','ubicacionesController');
 Route::get('/ubicacion/{id}','ubicacionesController@createLocation');
 Route::post('/ubicacionStore/{id}','ubicacionesController@storeLocation');
 Route::get('/ubicacionEdit/{id}','ubicacionesController@editLocation');
-
 Route::post('/ubicacionFind','ubicacionesController@ubicacionesFind');
 
-/*********USERS**************/
 Route::get('perfil','UserController@editProfile');
+
 Route::post('filesUser/{id}','UserController@files');
 Route::delete('filesUserDestroy/{id_campo}','UserController@filesDestroy');

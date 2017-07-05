@@ -144,12 +144,12 @@ function initMap() {
 
     var iconPrincipal = {
         url:"../img/iconoMarker.png", // url
-        scaledSize: new google.maps.Size(42, 70), // scaled size
+        scaledSize: new google.maps.Size(65, 110), // scaled size
     };
 
     var iconSecundario = {
     	url:"../img/iconoLove.png", // url
-        scaledSize: new google.maps.Size(42, 65), // scaled size
+        scaledSize: new google.maps.Size(42, 70), // scaled size
         /*origin: new google.maps.Point(0,0), // origin
         anchor: new google.maps.Point(0, 0)*/ // anchor
     }
@@ -226,8 +226,8 @@ function initMap() {
 
 	 	for (var i=0; i < marcadores.length; i++) {
 	 		marcadores[i].setMap(null);
-	 		marcadores.length = 0;
 	 	}
+	 		marcadores.length = 0;
 
 		e.preventDefault();
 		/*MARCADOR 1*/
@@ -237,21 +237,34 @@ function initMap() {
 		var radio = mradio *1000;
 		location = new google.maps.LatLng(mlat,mlng);
 		marker.setPosition(location);
-		marker.setIcon(iconSecundario);
+		marker.setIcon(iconPrincipal);
 		marker.setDraggable(false);
 
-		/*MARCADOR 2*/
-		var mlat = $(this).find('#lat').val();
-		var mlng = $(this).find('#lng').val();
-		location = new google.maps.LatLng(mlat,mlng);
 		map.setCenter(location);
 
-		var marker2 =new google.maps.Marker({
+		/*MARCADOR 2*/
+		var lugar_lat = $(this).find('#lat').val();
+		var lugar_lng = $(this).find('#lng').val();
+		location = new google.maps.LatLng(lugar_lat,lugar_lng);
+
+		var markers =new google.maps.Marker({
 		      position: location,
 		      map: map,
 		      draggable:false,
-		      icon:iconPrincipal,
+		      icon:iconSecundario,
 		    });
+
+	    marcadores.push(markers);
+	    /*ENCUENTA PUNTO MEDIO PARA CENTRAR*/
+		x1 = parseFloat(mlat);
+		y1 = parseFloat(mlng);
+		x2 = parseFloat(lugar_lat);
+		y2 = parseFloat(lugar_lng);
+		center_lat = (x1+x2)/2;
+		center_lng = (y1+y2)/2;
+		location = new google.maps.LatLng(center_lat,center_lng);
+		map.setCenter(location);
+		map.setZoom(13);
 	});
 
 	$("#btn_nueva").click(function(e){
@@ -340,7 +353,7 @@ function initMap() {
 	    	        return function() {
 	    	        	var dista = findDirecciones[i].distancia.toString().substring(0,3);
 	    	        	var nombre = findDirecciones[i].name;
-	    	        	infowindow.setContent("hola soy "+nombre+" me encuentro a  "+dista+"Km de distancia <a href='/usuarios/34/edit'>link</a> ");
+	    	        	infowindow.setContent("hola soy "+nombre+" me encuentro a  "+dista+"Km de distancia <a href='/usuarios/"+findDirecciones[i].id_user+"'>link</a> ");
 	    	        	infowindow.open(map, markers);
 	    	        }
 	    	      })(markers, i));
