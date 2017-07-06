@@ -137,6 +137,12 @@ function initMap() {
     var infowindow = new google.maps.InfoWindow();
     var cityCircle = new google.maps.Circle();
 
+
+  
+
+
+
+
     var map = new google.maps.Map(document.getElementById('map'), {
       center: location,
       zoom: 15

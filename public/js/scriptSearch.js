@@ -39,7 +39,14 @@ function initMap() {
 	var mlat = $('#lat').val();
 	var mlng = $('#lng').val();
     var cityCircle = new google.maps.Circle();    
-    var infowindow = new google.maps.InfoWindow();
+    var infowindow = new google.maps.InfoWindow();    
+    var input = document.getElementById('buscar');	
+ 	var searchBox = new google.maps.places.SearchBox(input);
+
+
+
+
+
 
 	function dibujaCirculo (radius,location){
 		if(typeof(cityCircle)!="undefined"){
@@ -67,7 +74,7 @@ function initMap() {
 
 	var map = new google.maps.Map(document.getElementById('map'), {
 	    center: location,
-	    zoom: 15
+	    zoom: 13
 	  });
 
 	var iconPrincipal = {
@@ -105,20 +112,13 @@ function initMap() {
     		cargarPuntosFind();
     	}
     function cargarPuntosFind(){
-    		
-
 	    	var mlat = $('#lat').val();
 			var mlng = $('#lng').val();
 			var mradio = $('#radio').val();
 			var radio = mradio * 1000;
 			location = new google.maps.LatLng(mlat,mlng);
-			if (radio>5){
-				var zoom = 12
-			}else{
-				var zoom = 15
-			}
 			dibujaCirculo(radio,location);
-			map.setZoom(zoom);
+			map.setZoom(13);
 
 		for (var i=0; i < findDirecciones.length; i++) {
 	    	location = new google.maps.LatLng(findDirecciones[i].latitud,findDirecciones[i].longitud);
@@ -146,5 +146,41 @@ function initMap() {
 	    	//console.log(findDirecciones[i].latitud+" - "+findDirecciones[i].longitud);
 	    }
     }
+
+    /*CUADRO DE BUSQUEDA*/
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+    map.addListener('bounds_changed', function() {
+          searchBox.setBounds(map.getBounds());
+        });
+
+        searchBox.addListener('places_changed', function() {
+          var places = searchBox.getPlaces();
+          if (places.length == 0) {
+            return;
+          }
+          
+          // For each place, get the icon, name and location.
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+
+            marker.setPosition(place.geometry.location);
+            $("#lat").val(place.geometry.location.lat);
+        	$("#lng").val(place.geometry.location.lng);
+        	map.setZoom(13);
+
+            if (place.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+          });
+          map.fitBounds(bounds);
+        });
+    /*END CUADRO DE BUSQUEDA*/
 
 }

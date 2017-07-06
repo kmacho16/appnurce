@@ -18,6 +18,6 @@
 
     {!!Html::script('js/jquery.min.js')!!}
 	{!!Html::script('js/bootstrap.min.js')!!}
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjtPdNSeeVGUgaaL8a7MN5yG4ZETeQeq4&callback=initMap"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjtPdNSeeVGUgaaL8a7MN5yG4ZETeQeq4&libraries=places&callback=initMap"></script>
 </body>
 </html>
