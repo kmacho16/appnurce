@@ -14,7 +14,7 @@ class ubicaciones extends Model
     ];
 
     public static function CalculaPuntos($lat,$lng,$box,$distance){
-    	$ubicaciones =DB::select("select ubicaciones.id,users.name,nombre,id_user,latitud,longitud,(6371 * ACOS( 
+    	$ubicaciones =DB::select("select ubicaciones.id,users.name,users.foto_perfil as img_perfil,nombre,id_user,latitud,longitud,(6371 * ACOS( 
     	                                    SIN(RADIANS(latitud)) 
     	                                    * SIN(RADIANS(?)) 
     	                                    + COS(RADIANS(longitud - ?)) 

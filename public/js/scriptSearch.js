@@ -138,7 +138,13 @@ function initMap() {
 	    	        return function() {
 	    	        	var dista = findDirecciones[i].distancia.toString().substring(0,3);
 	    	        	var nombre = findDirecciones[i].name;
-	    	        	infowindow.setContent("hola soy "+nombre+" me encuentro a  "+dista+"Km de distancia <a href='/usuarios/"+findDirecciones[i].id_user+"'>link</a> ");
+                  var img_perfil = findDirecciones[i].img_perfil;
+                  if (img_perfil == "" || img_perfil == null) {
+                    img_perfil = "img/profile.ico"
+                  }else{
+                    img_perfil = "uploads/"+findDirecciones[i].img_perfil;
+                  }
+	    	        	infowindow.setContent("<div class='col-md-12'><div class='col-md-4'><br /> <img src='"+img_perfil+"' class='img-circle img-responsive' style='width:90%' /></div> <div class='col-md-8'><h3 class='color-rosa text-center text-uppercase'>Informacion Personal</h3>  <table class='table'><tr><th>Nombre: </th><td>"+nombre+"</td></tr> <tr><th>Distancia: </th><td>"+dista+"Km</td></tr><tr><th>Perfil: </th><td><a href='/usuarios/"+findDirecciones[i].id_user+"'>Ver Perfil</a></td> </tr> </table> </div></div>");
 	    	        	infowindow.open(map, markers);
 	    	        }
 	    	      })(markers, i));
