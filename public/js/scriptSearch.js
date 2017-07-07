@@ -38,15 +38,10 @@ function initMap() {
 	var marcadores =[];
 	var mlat = $('#lat').val();
 	var mlng = $('#lng').val();
-    var cityCircle = new google.maps.Circle();    
-    var infowindow = new google.maps.InfoWindow();    
-    var input = document.getElementById('buscar');	
+  var cityCircle = new google.maps.Circle();    
+  var infowindow = new google.maps.InfoWindow();    
+  var input = document.getElementById('buscar');	
  	var searchBox = new google.maps.places.SearchBox(input);
-
-
-
-
-
 
 	function dibujaCirculo (radius,location){
 		if(typeof(cityCircle)!="undefined"){
@@ -112,13 +107,26 @@ function initMap() {
     		cargarPuntosFind();
     	}
     function cargarPuntosFind(){
-	    	var mlat = $('#lat').val();
+	    var mlat = $('#lat').val();
 			var mlng = $('#lng').val();
 			var mradio = $('#radio').val();
 			var radio = mradio * 1000;
 			location = new google.maps.LatLng(mlat,mlng);
 			dibujaCirculo(radio,location);
-			map.setZoom(13);
+      var radioNum = parseInt(mradio);
+      if (radioNum<3) {
+        var zoom = 15; 
+      }else if(radioNum<=5) {
+        var zoom = 14;
+      }else if(radioNum<=10) {
+        var zoom = 12;
+      }else{
+        var zoom = 11;
+      }
+
+
+
+			map.setZoom(zoom);
 
 		for (var i=0; i < findDirecciones.length; i++) {
 	    	location = new google.maps.LatLng(findDirecciones[i].latitud,findDirecciones[i].longitud);
@@ -174,9 +182,9 @@ function initMap() {
             }
 
             marker.setPosition(place.geometry.location);
-            $("#lat").val(place.geometry.location.lat);
-        	$("#lng").val(place.geometry.location.lng);
-        	map.setZoom(13);
+              $("#lat").val(place.geometry.location.lat);
+        	    $("#lng").val(place.geometry.location.lng);
+        	     
 
             if (place.geometry.viewport) {
               // Only geocodes have viewport.
@@ -186,6 +194,12 @@ function initMap() {
             }
           });
           map.fitBounds(bounds);
+          map.setZoom(13);
+          $('#radio').val(1);
+          cityCircle.setMap(null);
+          findDirecciones.length=0;
+          $("#personal_box").empty();
+
         });
     /*END CUADRO DE BUSQUEDA*/
 

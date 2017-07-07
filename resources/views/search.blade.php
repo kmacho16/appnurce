@@ -24,21 +24,28 @@
 						</div>
 					</div>
 					
-					<button class="btn btn-warning btn-block">BUSCAR</button>
+					<button class="btn btn-warning btn-block" id="btn_buscar">BUSCAR</button>
 					{!! Form::close() !!}
-				
-				@foreach ($ubicaciones as $personal)
-				@if (empty($personal->img_perfil))
-					<img src="img/profile.ico" class="img-responsive">					
-				@else
-					<img src="{{ url("uploads/".$personal->img_perfil) }}" class="img-responsive">	
-				@endif
-					<strong class="color-rosa text-uppercase">{{ $personal->name }}</strong> esta a <span class="color-rosa text-uppercase">{{ substr($personal->distancia,0,3) }}Km</span>
-					@if ($loop->first)
-						<i class="fa fa-star"></i>
-					@endif
-					<br>
-	        	@endforeach
+				<div id="personal_box">
+					@foreach ($ubicaciones as $personal)
+					<div class="col-md-12" style="margin-top: 15px">
+					<div class="col-md-4" style="padding:0 ">
+						@if (empty($personal->img_perfil))
+							<img src="img/profile.ico" class="img-responsive">					
+						@else
+							<img src="{{ url("uploads/".$personal->img_perfil) }}" class="img-responsive">
+						@endif
+					</div>
+					<div class="col-md-8">
+						<strong class="color-rosa text-uppercase text-center">{{ $personal->name }}</strong> <span class="color-rosa text-uppercase text-center">{{ substr($personal->distancia,0,3) }}Km</span>
+						@if ($loop->first)
+							<i class="fa fa-star"></i>
+						@endif
+						<br>
+					</div>
+					</div>					
+		        	@endforeach
+	        	</div>
 	        	{{-- {!! json_encode($ubicaciones) !!} --}}
 
 
