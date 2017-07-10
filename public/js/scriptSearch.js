@@ -33,6 +33,8 @@ function initMap() {
                               'Error: The Geolocation service failed.' :
                               'Error: Your browser doesn\'t support geolocation.');
       }*/
+
+
 function initMap() {
 
 	var marcadores =[];
@@ -42,6 +44,8 @@ function initMap() {
   var infowindow = new google.maps.InfoWindow();    
   var input = document.getElementById('buscar');	
  	var searchBox = new google.maps.places.SearchBox(input);
+
+  $("#ver_todos").fadeOut();
 
 	function dibujaCirculo (radius,location){
 		if(typeof(cityCircle)!="undefined"){
@@ -161,6 +165,11 @@ function initMap() {
 	    }
     }
 
+    function cuadroInfo(img_perfil,nombre,dista,id,map,marker){
+      infowindow.setContent("<div class='col-md-12'><div class='col-md-4'><br /> <img src='"+img_perfil+"' class='img-circle img-responsive' style='width:90%' /></div> <div class='col-md-8'><h3 class='color-rosa text-center text-uppercase'>Informacion Personal</h3>  <table class='table'><tr><th>Nombre: </th><td>"+nombre+"</td></tr> <tr><th>Distancia: </th><td>"+dista+"Km</td></tr><tr><th>Perfil: </th><td><a href='/usuarios/"+id+"'>Ver Perfil</a></td> </tr> </table> </div></div>");
+      infowindow.open(map, marker);
+    }
+
     /*CUADRO DE BUSQUEDA*/
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
     map.addListener('bounds_changed', function() {
@@ -202,5 +211,71 @@ function initMap() {
 
         });
     /*END CUADRO DE BUSQUEDA*/
+
+    /*RECUADROS USUARIOS*/
+    $("#persona #nombre").click(function(e){
+      //alert("HOla");
+      $("#ver_todos").fadeIn();
+      
+      e.preventDefault();
+      $("#btn_nueva").fadeIn();
+
+      for (var i=0; i < marcadores.length; i++) {
+        marcadores[i].setMap(null);
+      }
+      marcadores.length = 0;
+
+      /*MARCADOR 1*/
+      var mlat = $('#lat').val();
+      var mlng = $('#lng').val();
+      var mradio = $('#radio').val();
+      var radio = mradio *1000;
+      location = new google.maps.LatLng(mlat,mlng);
+      marker.setPosition(location);
+      marker.setIcon(iconPrincipal);
+      marker.setDraggable(false);
+
+      map.setCenter(location);
+
+      /*MARCADOR 2*/
+      var lugar_lat = $(this).find('#person_lat').val();
+      var lugar_lng = $(this).find('#person_lng').val();
+
+
+      location = new google.maps.LatLng(lugar_lat,lugar_lng);
+      var markers =new google.maps.Marker({
+            position: location,
+            map: map,
+            draggable:false,
+            icon:iconSecundario,
+          });
+      marcadores.push(markers);
+      cuadroInfo($(this).find("#person_img").val(),$(this).find("#person_nom").val(),$(this).find("#person_distancia").val(),$(this).find("#person_id").val(),map,markers)
+
+
+
+        /*ENCUENTA PUNTO MEDIO PARA CENTRAR*/
+      x1 = parseFloat(mlat);
+      y1 = parseFloat(mlng);
+      x2 = parseFloat(lugar_lat);
+      y2 = parseFloat(lugar_lng);
+      center_lat = (x1+x2)/2;
+      center_lng = (y1+y2)/2;
+      location = new google.maps.LatLng(center_lat,center_lng);
+      map.setCenter(location);
+      map.setZoom(14);
+      /*cityCircle.setMap(null);*/
+    });
+    /*END RECUADROS USUARIOS*/
+
+    $("#ver_todos").click(function(){
+      $(this).fadeOut();
+      for (var i=0; i < marcadores.length; i++) {
+        marcadores[i].setMap(null);
+      }
+      marcadores.length = 0;
+      cargarPuntosFind();
+      infowindow.close();
+    });
 
 }
