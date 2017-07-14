@@ -69,7 +69,7 @@ function initMap() {
 	}
 
 	var location = new google.maps.LatLng(mlat,mlng);
-  	var infoWindow = new google.maps.InfoWindow({map: map});
+  var infoWindow = new google.maps.InfoWindow({map: map});
 
 	var map = new google.maps.Map(document.getElementById('map'), {
 	    center: location,

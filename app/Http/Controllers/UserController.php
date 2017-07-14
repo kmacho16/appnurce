@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\User;
 use App\archivosUser;
+use App\historial_chat;
+
 use DB;
+use Auth;
 
 class UserController extends Controller
 {
@@ -22,7 +25,9 @@ class UserController extends Controller
     'email'=>['required','email','unique:users'],
     'password'=>['required','min:4','max:15']
     ];
-
+public function __construct(){
+        $this->middleware('auth');
+    }
 
     public function index(Request $request)
     {
@@ -80,10 +85,41 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        
         $usuario  = User::find($id);
-        return view('users.show',['usuario'=>$usuario]);
+        $documentos = archivosUser::where('id_user',$id)->get();
+         $cant_mensajes_no_leido = historial_chat::select(DB::raw('count(*) as total'))->where([['leido',false],['to_id_user',Auth::user()->id]])->get();
+        $mensajes = historial_chat::join('users','id_user','users.id')->select('historial_chat.*','users.name')->where('id_user',Auth::user()->id)->orwhere('to_id_user',Auth::user()->id)->get();
+         /*$mensajes = DB::table('historial_chat')->join('users','historial_chat.id_user','users.id')->select('historial_chat.*','users.name')->where('historial_chat.id_user',Auth::user()->id)->orwhere('historial_chat.to_id_user',Auth::user()->id)->get();*/
+        
+
+        $params = [
+        'usuario'=>$usuario,
+        'documentos'=>$documentos,
+        'cantidad'=>$cant_mensajes_no_leido,
+        'mensajes'=>$mensajes,
+        ];
+        return view('users.show',$params);
     }
+
+    public function showProfile()
+    {
+        $usuario  = User::find(auth::user()->id);
+        $documentos = archivosUser::where('id_user',Auth::user()->id)->get();
+        $cant_mensajes_no_leido = historial_chat::select(DB::raw('count(*) as total'))->where([['leido',false],['to_id_user',Auth::user()->id]])->get();
+        $mensajes = historial_chat::join('users','id_user','users.id')->select('historial_chat.*','users.name')->where('id_user',Auth::user()->id)->orwhere('to_id_user',Auth::user()->id)->get();
+         /*$mensajes = DB::table('historial_chat')->join('users','historial_chat.id_user','users.id')->select('historial_chat.*','users.name')->where('historial_chat.id_user',Auth::user()->id)->orwhere('historial_chat.to_id_user',Auth::user()->id)->get();*/
+        
+
+        $params = [
+        'usuario'=>$usuario,
+        'documentos'=>$documentos,
+        'cantidad'=>$cant_mensajes_no_leido,
+        'mensajes'=>$mensajes,
+        ];
+        return view('users.show',$params);
+    }
+    
+
 
     /**
      * Show the form for editing the specified resource.

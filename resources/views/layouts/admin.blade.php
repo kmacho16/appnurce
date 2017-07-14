@@ -8,8 +8,8 @@
     {!!Html::style('css/font-awesome.min.css')!!}
     {!!Html::style('css/metisMenu.min.css')!!}    
     {!!Html::style('css/sb-admin-2.css')!!}
+    {!!Html::style('css/jquery-ui.css')!!}
     {!!Html::style('css/style2.css')!!}
-
 
 </head>
 <body>
@@ -110,8 +110,15 @@
     {!!Html::script('js/bootstrap.min.js')!!}
     {!!Html::script('js/metisMenu.min.js')!!}
     {!!Html::script('js/sb-admin-2.js')!!}
+    {!!Html::script('js/jquery-ui.js')!!}
     {!!Html::script('js/miScript.js')!!}   
     {!!Html::script('js/gmaps.js')!!}
+
+<script>
+  $( function() {
+    $( "#datepicker" ).datepicker({ dateFormat: 'yy/mm/dd' }).val();
+  } );
+  </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjtPdNSeeVGUgaaL8a7MN5yG4ZETeQeq4&callback=initMap"></script>
 </body>
 </html>

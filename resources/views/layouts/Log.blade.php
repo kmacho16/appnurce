@@ -19,10 +19,8 @@
 	</div>
 
     {!!Html::script('js/jquery.min.js')!!}
-
-    {!!Html::script('js/owl.carousel.min.js')!!}
-    
 	{!!Html::script('js/bootstrap.min.js')!!}
+    {!!Html::script('js/owl.carousel.min.js')!!}
 	<script>
     	$('.carousel').carousel({
 		  interval: false

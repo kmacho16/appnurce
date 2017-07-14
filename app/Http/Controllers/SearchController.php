@@ -16,7 +16,8 @@ class SearchController extends Controller
         $lng=$request->lng;
         $distance = $radio = $request->radio;
         $box = ubicaciones::getBoundaries($lat,$lng,$distance);
+      /*  return json_encode($box);*/
         $ubicaciones =ubicaciones::CalculaPuntos($lat,$lng,$box,$distance);
-        return view('search',["ubicaciones"=>$ubicaciones]);
+        return view('principal.search',["ubicaciones"=>$ubicaciones]);
     }
 }

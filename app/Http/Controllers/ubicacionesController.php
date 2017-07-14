@@ -134,6 +134,7 @@ class ubicacionesController extends Controller
         $lat= $request->latBus;
         $lng=$request->lngBus;
         $distance = $radio = $request->radio;
+
         $box = ubicaciones::getBoundaries($lat,$lng,$distance);
         $ubicaciones =ubicaciones::CalculaPuntos($lat,$lng,$box,$distance);
         return view('ubicaciones.find',['lat'=>$lat,'lng'=>$lng,'radio'=>$radio,'ubicacionesFind'=>$ubicaciones]);

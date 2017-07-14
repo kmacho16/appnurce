@@ -25,7 +25,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::resource('/usuarios','UserController');
+Route::get('/profile','UserController@showProfile');
 Route::resource('/ubicaciones','ubicacionesController');
+Route::resource('/mensajes','MensajesController');
 
 Route::get('/ubicacion/{id}','ubicacionesController@createLocation');
 Route::post('/ubicacionStore/{id}','ubicacionesController@storeLocation');
