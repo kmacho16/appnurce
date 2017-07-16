@@ -92,6 +92,100 @@ function confirmarEliminar(btn){
 	$("#"+btn).click();
 	}
 }
+
+
+$("#chat-panel .chat-person").click(function(e){
+	e.preventDefault();
+	var id = $(this).attr('id');
+	var token = $('input[name=_token]').val();
+	var nombre =  $(this).find('div strong').text();
+	var mi_id = $(this).find('#mi_id').val();
+	$("#nom_chat").text(nombre);
+
+	$("#chat_control textarea").prop("disabled",false);
+	$("#chat_control button").prop("disabled",false);
+	//alert(nombre);
+	cargarMensajes(id,mi_id,token);
+});
+
+function cargarMensajes(id,mi_id,token){
+
+	$("#respuesta-chat").empty();
+
+				get_ultimo = false;
+	$.ajax({
+		url:'/consultarChat',
+		method: 'POST',
+		data:{
+			id:id,
+			_token:token,
+		},
+		success:function(data){
+			$(data).each(function(id,value){
+				if(value.foto_perfil=='NULL' || value.foto_perfil==null){
+					var image = "/img/profile.ico";
+				}else{
+					var image = "/uploads/"+value.foto_perfil;
+				}
+
+				if (value.id_user==mi_id){
+					id_send = value.to_id_user;
+					div = '<div class="col-md-12" style="margin:5px 0"> <div class=""> <div class="col-md-8 col-md-offset-1"> <div class="alert alert-warning"> <p data-toggle="tooltip" data-placement="left" title="'+value.created_at+'">'+value.mensaje+'</p> </div> </div> <div class="col-md-2"> <img src="'+image+'" alt="" class="img-responsive img-circle" width="70px" alt="Tu"> </div> </div>';
+				}else{					
+					id_send = value.id_user;
+					div = '<div class="col-md-12" style="margin:5px 0"> <div class=""> <div class="col-md-2"> <img src="'+image+'" alt="" class="img-responsive img-circle" width="70px" alt="Tu"> </div>  <div class="col-md-8"> <div class="alert alert-success"> <p data-toggle="tooltip" data-placement="left" title="'+value.created_at+'">'+value.mensaje+'</p> </div> </div></div>';
+				}
+				if(!get_ultimo){
+					id_ultimo = value.id;
+					get_ultimo = true;
+				}
+				$("#respuesta-chat").append(div);
+			});
+
+			$("#chat_control input").val(id+"-"+id_send+'-'+id_ultimo);
+			//$("#respuesta-chat").scrollTop($("#respuesta-chat").height());
+			/*$("#respuesta-chat").html(data);
+			console.log(data);*/
+			$(function () {
+			  $('[data-toggle="tooltip"]').tooltip();
+			});
+
+		},
+		error:function(data){
+			alert(data);
+		}
+	});
+}
+
+$("#chat_control button").click(function(e){
+	e.preventDefault();
+	var token = $('input[name=_token]').val();
+	var ids= $("#chat_control input").val();
+	exp_ids = ids.split('-');
+	id = exp_ids[0];
+	mi_id = $('#mi_id').val();
+	/*alert(mi_id);*/
+	mmensaje = $("#chat_control textarea").val();
+	$.ajax({
+		url:'/enviarMensaje',
+		method: 'POST',
+		data:{
+			ids:ids,
+			_token:token,
+			mensaje:mmensaje,
+		},
+		success:function(data){
+			$("#chat_control textarea").val('');
+			cargarMensajes(id,mi_id,token);
+		},
+		error:function(data){
+			alert(data);
+		}
+	});
+
+});
+
+
 /********************************************/
 /*function localizame(){
 	if(navigator.geolocation){
@@ -369,3 +463,6 @@ function initMap() {
     }
 	/*FIN CARGAR PUNTOS FIND*/
 }
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});

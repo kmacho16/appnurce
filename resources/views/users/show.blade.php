@@ -7,8 +7,8 @@
     <li role="presentation" ><a href="#documentos" aria-controls="documentos" role="tab" data-toggle="tab">Documentos</a></li>
     <li role="presentation"><a href="#comentarios" aria-controls="comentarios" role="tab" data-toggle="tab">Comentarios</a></li>
 
-    <li role="presentation"><a href="#mensajes" aria-controls="mensajes" role="tab" data-toggle="tab">Mensajes @if ($cantidad[0]['total']>0)
-        <span class="badge">{!! $cantidad[0]['total'] !!}</span>
+    <li role="presentation"><a href="#mensajes" aria-controls="mensajes" role="tab" data-toggle="tab">Mensajes @if ($cantidad[0]->total>0)
+        <span class="badge">{!! $cantidad[0]->total !!}</span>
     @endif</a></li>
   </ul>
   <!-- Tab panes -->
@@ -69,7 +69,26 @@
     <table class="table table-hover">
     <th>Nombre</th><th>Mensaje</th><th>Estado</th><th>Opciones</th>
     @foreach ($mensajes as $mensaje)
-        <tr><td>{{ $mensaje->name }}</td><td>{!!$mensaje->mensaje  !!}</td><td>{{ $mensaje->leido }}</td><td><a href="#">Responder</a> <a href="#">Eliminar</a></td></tr>
+        <tr>
+        <td>
+            @if ($mensaje->id_user == Auth::user()->id )
+                YO
+            @else
+                {{ $mensaje->name }}
+            @endif
+        </td>
+        <td>
+            {!!$mensaje->mensaje  !!}
+        </td>
+        <td>
+        @if (($mensaje->id_user == Auth::user()->id) )
+            <i class="fa fa-check fa-2x"></i>
+        @endif
+        </td>
+        <td>
+            <a href="#"  data-toggle="modal" data-target="#{{ $mensaje->id_chat}}">Responder</a> 
+            <a href="#">Eliminar</a></td>
+        </tr>
     @endforeach
         
     </table>
@@ -110,5 +129,35 @@
     </div>
   </div>
 </div>
+
+@foreach ($mensajes as $mensaje)
+    <div class="modal fade" id="{{ $mensaje->id_chat }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title text-uppercase text-center color-rosa" id="myModalLabel">Informacion de contacto</h4>
+          </div>
+        {!! Form::open(['route'=>['mensajes.store'],'method'=>'Post']) !!}
+          <div class="modal-body">
+            {!! $mensaje->mensaje !!}
+            <hr>
+            <div class="form-group ">
+                <label for="">Informacion </label>                
+                <input type="text" name="id_user" value="{{ $mensaje->id_user }}">
+                <input type="text" name="id_chat" value="{{ $mensaje->id }}">
+                <textarea name="comentario" id="" cols="30" rows="10" class="form-control" placeholder="aqui pudes contarnos mas sobre lo que necesitas"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+          </div>
+          {!! Form::close() !!}
+        </div>
+      </div>
+    </div>
+@endforeach
+
 
 @endsection

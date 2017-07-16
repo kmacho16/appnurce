@@ -38,3 +38,9 @@ Route::get('perfil','UserController@editProfile');
 
 Route::post('filesUser/{id}','UserController@files');
 Route::delete('filesUserDestroy/{id_campo}','UserController@filesDestroy');
+
+
+
+/* RUTAS PARA LOS AJAX**/
+Route::post('consultarChat','ajaxController@consultaChat');
+Route::post('enviarMensaje','ajaxController@enviarMensaje');

@@ -69,3 +69,12 @@ body,.sidebar {
 	text-transform: uppercase;
 	font-weight: bold;
 }
+
+.chat-person div:hover{
+	background: #e0e0e0;
+	border-radius: 5px;
+}
+
+.sin_leer div{
+	font-weight: bold;
+}

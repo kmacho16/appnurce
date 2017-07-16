@@ -87,8 +87,8 @@ public function __construct(){
     {
         $usuario  = User::find($id);
         $documentos = archivosUser::where('id_user',$id)->get();
-         $cant_mensajes_no_leido = historial_chat::select(DB::raw('count(*) as total'))->where([['leido',false],['to_id_user',Auth::user()->id]])->get();
-        $mensajes = historial_chat::join('users','id_user','users.id')->select('historial_chat.*','users.name')->where('id_user',Auth::user()->id)->orwhere('to_id_user',Auth::user()->id)->get();
+         $cant_mensajes_no_leido = historial_chat::cantidadMensajes();
+        $mensajes = historial_chat::join('users as us1','id_user','us1.id')->join('users as us2','to_id_user','us2.id')->select('historial_chat.*','us1.name','us2.name')->where([['id_user',Auth::user()->id],['historial_chat.leido',false] ])->orwhere([['to_id_user',Auth::user()->id],['historial_chat.leido',false] ])->orderby('historial_chat.id','DESC')->get();
          /*$mensajes = DB::table('historial_chat')->join('users','historial_chat.id_user','users.id')->select('historial_chat.*','users.name')->where('historial_chat.id_user',Auth::user()->id)->orwhere('historial_chat.to_id_user',Auth::user()->id)->get();*/
         
 
@@ -106,9 +106,10 @@ public function __construct(){
         $usuario  = User::find(auth::user()->id);
         $documentos = archivosUser::where('id_user',Auth::user()->id)->get();
         $cant_mensajes_no_leido = historial_chat::select(DB::raw('count(*) as total'))->where([['leido',false],['to_id_user',Auth::user()->id]])->get();
-        $mensajes = historial_chat::join('users','id_user','users.id')->select('historial_chat.*','users.name')->where('id_user',Auth::user()->id)->orwhere('to_id_user',Auth::user()->id)->get();
+        $mensajes = historial_chat::join('users as us1','id_user','us1.id')->join('users as us2','to_id_user','us2.id')->select('historial_chat.*','us1.name','us2.name')->where([['id_user',Auth::user()->id],['historial_chat.leido',false] ])->orwhere([['to_id_user',Auth::user()->id],['historial_chat.leido',false] ])->orderby('historial_chat.id','DESC')->get();
+        //return $mensajes;
          /*$mensajes = DB::table('historial_chat')->join('users','historial_chat.id_user','users.id')->select('historial_chat.*','users.name')->where('historial_chat.id_user',Auth::user()->id)->orwhere('historial_chat.to_id_user',Auth::user()->id)->get();*/
-        
+        //return $mensajes;
 
         $params = [
         'usuario'=>$usuario,

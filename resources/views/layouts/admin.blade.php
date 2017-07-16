@@ -11,6 +11,8 @@
     {!!Html::style('css/jquery-ui.css')!!}
     {!!Html::style('css/style2.css')!!}
 
+    @inject('cantidad','App\historial_chat');
+
 </head>
 <body>
     <div id="wrapper">
@@ -89,6 +91,12 @@
                                     <a href="#"><i class='fa fa-list-ol fa-fw'></i> Categorias</a>
                                 </li>
                             </ul>
+                        </li>
+
+                        <li>
+                            <a href="{!!route('mensajes.index') !!}"><i class="fa fa-inbox fa-fw"></i> Mensajes <span class="badge"> {{ $cantidad->cantidadMensajes()[0]->total  }}</span>
+                            
+                            </a>
                         </li>
 
                     </ul>

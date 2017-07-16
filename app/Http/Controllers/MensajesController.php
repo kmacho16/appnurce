@@ -19,7 +19,13 @@ class MensajesController extends Controller
      */
     public function index()
     {
-        //
+         $mensajes = historial_chat::join('users as us1','id_user','us1.id')
+         ->join('users as us2','to_id_user','us2.id')
+         ->select('historial_chat.*','us1.name as from_nombre','us2.name as to_nombre','us1.foto_perfil as from_img','us2.foto_perfil as to_img')
+         ->where([['historial_chat.id_user',Auth::user()->id],['historial_chat.leido',false] ])
+         ->orwhere([['historial_chat.to_id_user',Auth::user()->id],['historial_chat.leido',false] ])
+         ->orderby('historial_chat.id','DESC')->get();
+        return view('mensajes.index',['mensajes'=>$mensajes]);
     }
 
     /**
@@ -40,23 +46,25 @@ class MensajesController extends Controller
      */
     public function store(Request $request)
     {
-            $resultado = historial_chat::where([['id_user',Auth::user()->id],['to_id_user',$request->id_user]])->get();
+            $resultado = historial_chat::where([['id_user',Auth::user()->id],['to_id_user',$request->id_user]])->orwhere([['id_user',$request->id_user],['to_id_user',Auth::user()->id]])->groupBy('id_chat')->first();
 
-            if(!$resultado->isEmpty()){
-                $mensaje="ya habias enviado un mensaje ";
-                return $mensaje;
+            if(!empty($resultado)){
+                $mensaje_previo = historial_chat::find($request->id_chat);
+                $mensaje_previo->leido = true;
+                $mensaje_previo->save();
+                $id_chat = $resultado->id_chat;
+                $mensaje = $request->comentario;
             }else{
                 $id_chat = Chat::insertGetId(['id' => '']);
-                $mi_mensaje = new historial_chat;
-                $mensaje = "Hola tienes una solicitud con los siguientes datos: <br> <strong>Fecha del servicio:</strong> $request->fecha <br> <strong>Direccion:</strong> $request->direccion <br> <strong>Observaciones:</strong> $request->comentario";
-                $mi_mensaje->id_chat = $id_chat;
-                $mi_mensaje->id_user = Auth::user()->id;    
-                $mi_mensaje->to_id_user = $request->id_user;
-                $mi_mensaje->mensaje= $mensaje;
-                $mi_mensaje->save();
+                $mensaje = "Un usuario ha solicitado tu informacion, sus datos de su servicio son los siguientes: <br> <strong>Fecha del servicio:</strong> $request->fecha <br> <strong>Direccion:</strong> $request->direccion <br> <strong>Observaciones:</strong> $request->comentario";
             }
-            
-
+            //return $mensaje;
+            $mi_mensaje = new historial_chat;
+            $mi_mensaje->id_chat = $id_chat;
+            $mi_mensaje->id_user = Auth::user()->id;    
+            $mi_mensaje->to_id_user = $request->id_user;
+            $mi_mensaje->mensaje= $mensaje;
+            $mi_mensaje->save();
         return  back();
     }
 
