@@ -10,6 +10,11 @@
     {!!Html::style('css/sb-admin-2.css')!!}
     {!!Html::style('css/jquery-ui.css')!!}
     {!!Html::style('css/style2.css')!!}
+    {!!Html::style('css/fullcalendar.min.css')!!}
+
+    {!!Html::script('js/jquery.min.js')!!}
+    {!!Html::script('js/moment.min.js')!!}
+    {!!Html::script('js/fullcalendar.min.js')!!}
 
     @inject('cantidad','App\historial_chat');
 
@@ -82,13 +87,13 @@
                         </li>
 
                         <li>
-                            <a href="#"><i class="fa fa-child fa-fw"></i> Categorias<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-calendar fa-fw"></i> Calendario<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="#"><i class='fa fa-plus fa-fw'></i> Agregar</a>
+                                    <a href="{!!  route('eventos.create')  !!}"><i class='fa fa-plus fa-fw'></i> Agregar Evento</a>
                                 </li>
                                 <li>
-                                    <a href="#"><i class='fa fa-list-ol fa-fw'></i> Categorias</a>
+                                    <a href="{!!  route('eventos.index')  !!}"><i class='fa fa-list-ol fa-fw'></i> Mi calenario</a>
                                 </li>
                             </ul>
                         </li>
@@ -114,9 +119,9 @@
     
 
     
-    {!!Html::script('js/jquery.min.js')!!}
     {!!Html::script('js/bootstrap.min.js')!!}
     {!!Html::script('js/metisMenu.min.js')!!}
+    {!!Html::script('js/jscolor.min.js')!!}
     {!!Html::script('js/sb-admin-2.js')!!}
     {!!Html::script('js/jquery-ui.js')!!}
     {!!Html::script('js/miScript.js')!!}   
@@ -124,9 +129,11 @@
 
 <script>
   $( function() {
-    $( "#datepicker" ).datepicker({ dateFormat: 'yy/mm/dd' }).val();
+    $( "#datepicker" ).datepicker({ dateFormat: 'yy/mm/dd',minDate: 0 }).val();
+    $( "#datepicker2" ).datepicker({ dateFormat: 'yy/mm/dd',minDate: 0 }).val();
+    
   } );
-  </script>
+</script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjtPdNSeeVGUgaaL8a7MN5yG4ZETeQeq4&callback=initMap"></script>
 </body>
 </html>
