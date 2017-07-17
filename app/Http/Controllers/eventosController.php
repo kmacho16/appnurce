@@ -80,12 +80,10 @@ class eventosController extends Controller
 
         $eventos->dia_completo = $all_day;
         $eventos->fecha_inicio = $request->f_ini." ".$request->h_ini;        
-        $eventos->fecha_fin = $request->f_fin." ".$request->h_ini;
+        $eventos->fecha_fin = $request->f_fin." ".$request->h_fin;
         $eventos->save();
 
-
-
-        return "Ok";
+        return back();
     }
 
     /**
@@ -120,7 +118,25 @@ class eventosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $eventos = Eventos::find($id);
+        $eventos->id_user = Auth::user()->id;
+        $eventos->to_id_user =  Auth::user()->id;
+
+        $eventos->nombre_evento = $request->nombre_evento;
+        $eventos->color = $request->color;
+
+        if ($request->dia_completo) {
+            $all_day = true;
+        }else{
+            $all_day = false;
+        }
+
+        $eventos->dia_completo = $all_day;
+        $eventos->fecha_inicio = $request->f_ini." ".$request->h_ini;        
+        $eventos->fecha_fin = $request->f_fin." ".$request->h_fin;
+        $eventos->save();
+
+        return redirect('eventos');
     }
 
     /**
@@ -131,6 +147,10 @@ class eventosController extends Controller
      */
     public function destroy($id)
     {
-        //
+         $eventos = Eventos::find($id);
+         $eventos->delete();
+
+        return redirect('eventos');
+
     }
 }
