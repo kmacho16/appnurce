@@ -38,12 +38,12 @@ class ubicaciones extends Model
     	                       having distancia < ? 
     	                       order by distancia ASC",[$mlat,$lng,$lat,$box['min_lat'],$box['max_lat'],$box['min_lng'],$box['max_lng'],$distance]);//DESActive el STRICT*/
 
-            $ubicaciones =DB::select("select users.name,users.foto_perfil as img_perfil,id_user,latitud,longitud,(6371 * ACOS(SIN(RADIANS(cast(latitud as double precision))) * SIN(RADIANS(cast(? as double precision) )) + COS(RADIANS( cast(longitud as double precision) - cast(? as double precision) )) 
+            $ubicaciones =DB::select("select users.name,users.foto_perfil as img_perfil,nombre,id_user,latitud,longitud,(6371 * ACOS(SIN(RADIANS(cast(latitud as double precision))) * SIN(RADIANS(cast(? as double precision) )) + COS(RADIANS( cast(longitud as double precision) - cast(? as double precision) )) 
                 * COS(RADIANS(cast(latitud as double precision))) 
                 * COS(RADIANS(cast(? as double precision)) ))) AS distancia 
                 from ubicaciones inner join users on ubicaciones.id_user = users.id and users.id_rol = 2 ".$consulta."  
                where (latitud between ? and ? ) and (longitud between ? and ? )
-               group by  users.id,distancia
+               group by  users.id,ubicaciones.id_user,distancia
                order by distancia ASC",[$mlat,$mlng,$mlat,$box['min_lat'],$box['max_lat'],$box['min_lng'],$box['max_lng']]);//DESActive el STRICT
     	return $ubicaciones;
     }
