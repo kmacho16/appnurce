@@ -39,7 +39,7 @@ class ubicaciones extends Model
     	                       order by distancia ASC",[$mlat,$lng,$lat,$box['min_lat'],$box['max_lat'],$box['min_lng'],$box['max_lng'],$distance]);//DESActive el STRICT*/
 
             $ubicaciones =DB::select("select ubicaciones.id,users.name,users.foto_perfil as img_perfil,nombre,id_user,latitud,longitud,(6371 * ACOS( 
-                                                SIN(RADIANS(cast(latitud1 as double latitud)) 
+                                                SIN(RADIANS(cast(latitud as double precision)) 
                                                 * SIN(RADIANS(?)) 
                                                 + COS(RADIANS(longitud - ?)) 
                                                 * COS(RADIANS(latitud)) 
