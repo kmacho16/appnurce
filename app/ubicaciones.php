@@ -45,7 +45,7 @@ class ubicaciones extends Model
                                                 * COS(RADIANS(cast(latitud as double precision)) 
                                                 * COS(RADIANS(?))
                                                 )
-                                    AS distancia 
+                                   ) AS distancia 
                                    from ubicaciones inner join users on ubicaciones.id_user = users.id and users.id_rol = 2 ".$consulta."  
                                    where (latitud between ? and ? )
                                    and (longitud between ? and ? )
