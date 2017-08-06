@@ -44,8 +44,7 @@ class ubicaciones extends Model
                 from ubicaciones inner join users on ubicaciones.id_user = users.id and users.id_rol = 2 ".$consulta."  
                where (latitud between ? and ? ) and (longitud between ? and ? )
                group by  users.id 
-               having distancia < ? 
-               order by distancia ASC",[$mlat,$mlng,$mlat,$box['min_lat'],$box['max_lat'],$box['min_lng'],$box['max_lng'],$distance]);//DESActive el STRICT
+               order by distancia ASC",[$mlat,$mlng,$mlat,$box['min_lat'],$box['max_lat'],$box['min_lng'],$box['max_lng']]);//DESActive el STRICT
     	return $ubicaciones;
     }
 
