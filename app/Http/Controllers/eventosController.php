@@ -68,10 +68,19 @@ class eventosController extends Controller
     {
         $eventos = new Eventos();
         $eventos->id_user = Auth::user()->id;
-        $eventos->to_id_user =  Auth::user()->id;
+
+        if ($request->to_id_user == null) {
+            $eventos->to_id_user =  Auth::user()->id;
+        }else{
+            $eventos->to_id_user =$request->to_id_user;
+        };
+
+        //return $eventos->to_id_user;
 
         $eventos->nombre_evento = $request->nombre_evento;
         $eventos->color = $request->mi_color;
+
+        $eventos->descripcion = $request->descripcion;
         if ($request->all_day) {
             $all_day = true;
         }else{
@@ -104,7 +113,8 @@ class eventosController extends Controller
      */
     public function edit($id)
     {
-        $evento = Eventos::find($id);
+        $evento = Eventos::select('eventos.*','users.name')->join('users','users.id','to_id_user')->where([['eventos.id',$id],['eventos.id_user',Auth::user()->id]])->first();//find($id);
+        //return $evento;
         //return $evento;
         return view('eventos.edit',['evento'=>$evento]);
     }
@@ -120,9 +130,16 @@ class eventosController extends Controller
     {
         $eventos = Eventos::find($id);
         $eventos->id_user = Auth::user()->id;
-        $eventos->to_id_user =  Auth::user()->id;
 
+        if ($request->to_id_user == null) {
+            $eventos->to_id_user =  Auth::user()->id;
+        }else{
+            $eventos->to_id_user =$request->to_id_user;
+        };
+        
         $eventos->nombre_evento = $request->nombre_evento;
+        $eventos->descripcion = $request->descripcion;
+        
         $eventos->color = $request->color;
 
         if ($request->dia_completo) {

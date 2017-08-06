@@ -16,7 +16,7 @@
     {!!Html::script('js/moment.min.js')!!}
     {!!Html::script('js/fullcalendar.min.js')!!}
 
-    @inject('cantidad','App\historial_chat');
+    @inject('cantidad','App\historial_chat')
 
 </head>
 <body>
@@ -87,15 +87,8 @@
                         </li>
 
                         <li>
-                            <a href="#"><i class="fa fa-calendar fa-fw"></i> Calendario<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="{!!  route('eventos.create')  !!}"><i class='fa fa-plus fa-fw'></i> Agregar Evento</a>
-                                </li>
-                                <li>
-                                    <a href="{!!  route('eventos.index')  !!}"><i class='fa fa-list-ol fa-fw'></i> Mi calenario</a>
-                                </li>
-                            </ul>
+                            <a href="{!!  route('eventos.index')  !!}"><i class="fa fa-calendar fa-fw"></i> Calendario</a>
+                            
                         </li>
 
                         <li>
@@ -123,14 +116,17 @@
     {!!Html::script('js/metisMenu.min.js')!!}
     {!!Html::script('js/jscolor.min.js')!!}
     {!!Html::script('js/sb-admin-2.js')!!}
-    {!!Html::script('js/jquery-ui.js')!!}
     {!!Html::script('js/miScript.js')!!}   
     {!!Html::script('js/gmaps.js')!!}
+    {!!Html::script('js/jquery-ui.js')!!}
+{{-- 
+    {!!Html::script('js/localeAll.js')!!} --}}
 
 <script>
   $( function() {
     $( "#datepicker" ).datepicker({ dateFormat: 'yy/mm/dd',minDate: 0 }).val();
     $( "#datepicker2" ).datepicker({ dateFormat: 'yy/mm/dd',minDate: 0 }).val();
+    
     
   } );
 </script>

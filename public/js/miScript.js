@@ -93,14 +93,18 @@ function confirmarEliminar(btn){
 	}
 }
 
+$(".btn-prog-msj").hide();
 
 $("#chat-panel .chat-person").click(function(e){
 	e.preventDefault();
 	var id = $(this).attr('id');
 	var token = $('input[name=_token]').val();
-	var nombre =  $(this).find('div strong').text();
+	var nombre =  $(this).find('div #span_nombre').text();
 	var mi_id = $(this).find('#mi_id').val();
 	$("#nom_chat").text(nombre);
+	$("#nombre_modal").text(nombre);
+	$(".btn-prog-msj").fadeIn();
+	//$("#nom_chat").append('<button class="btn btn-info pull-right btn-sm" data-toggle="modal" data-target="#modal_evento"><i class="fa fa-clock-o"></i> Programar cita</button>');	
 
 	$("#chat_control textarea").prop("disabled",false);
 	$("#chat_control button").prop("disabled",false);
@@ -121,29 +125,31 @@ function cargarMensajes(id,mi_id,token){
 			_token:token,
 		},
 		success:function(data){
-			$(data).each(function(id,value){
+			$(data.reverse()).each(function(id,value){
 				if(value.foto_perfil=='NULL' || value.foto_perfil==null){
 					var image = "/img/profile.ico";
 				}else{
 					var image = "/uploads/"+value.foto_perfil;
 				}
 
+
 				if (value.id_user==mi_id){
 					id_send = value.to_id_user;
 					div = '<div class="col-md-12" style="margin:5px 0"> <div class=""> <div class="col-md-8 col-md-offset-1"> <div class="alert alert-warning"> <p data-toggle="tooltip" data-placement="left" title="'+value.created_at+'">'+value.mensaje+'</p> </div> </div> <div class="col-md-2"> <img src="'+image+'" alt="" class="img-responsive img-circle" width="70px" alt="Tu"> </div> </div>';
-				}else{					
+				}else{				
+					$("#imagen_modal").attr('src',image);
+					$("#modal_id").val(value.id_user);	
 					id_send = value.id_user;
 					div = '<div class="col-md-12" style="margin:5px 0"> <div class=""> <div class="col-md-2"> <img src="'+image+'" alt="" class="img-responsive img-circle" width="70px" alt="Tu"> </div>  <div class="col-md-8"> <div class="alert alert-success"> <p data-toggle="tooltip" data-placement="left" title="'+value.created_at+'">'+value.mensaje+'</p> </div> </div></div>';
 				}
-				if(!get_ultimo){
+
 					id_ultimo = value.id;
-					get_ultimo = true;
-				}
+				
 				$("#respuesta-chat").append(div);
 			});
 
 			$("#chat_control input").val(id+"-"+id_send+'-'+id_ultimo);
-			//$("#respuesta-chat").scrollTop($("#respuesta-chat").height());
+			$("#respuesta-chat").scrollTop($("#respuesta-chat").height());
 			/*$("#respuesta-chat").html(data);
 			console.log(data);*/
 			$(function () {

@@ -31,11 +31,13 @@
                 </div>
                 
                 <div class="col-md-8">
-                    @if ($mensaje->id_user == Auth::user()->id )
-                        {{ $mensaje->to_nombre }}
-                    @else
-                        {{ $mensaje->from_nombre }}
-                    @endif
+                    <span id="span_nombre">
+                        @if ($mensaje->id_user == Auth::user()->id )
+                            {{ $mensaje->to_nombre }}
+                        @else
+                            {{ $mensaje->from_nombre }}
+                        @endif
+                    </span>
                     <br>
                     <span style="font-size: 11px">
                         @if ($mensaje->id_user == Auth::user()->id )
@@ -49,26 +51,19 @@
         @endforeach
     </section>
     <section>
-        <button class="btn btn-info btn-sm"><i class="fa fa-clock-o"></i> Programar</button>
-        <button class="btn btn-warning btn-sm"><i class="fa fa-calendar"></i> Mi calendario</button>
+        {{-- <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal_evento"><i class="fa fa-clock-o"></i> Programar</button>
+        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_calendario"><i class="fa fa-calendar"></i> Mi calendario</button> --}}
     </section>
 </div>
 
 <div class="col-md-9">
-    <div class="form-group" id="chat_control">
-        <div class="col-md-10">
-          <textarea class="form-control" cols="40" rows="1" style="resize: vertical;" disabled="true"></textarea>
-        </div>
-        <div class="col-md-2">
-            <button class="btn btn-rosa" disabled="true"><i class="fa fa-send"></i> Enviar</button>
-        </div>
-        <input type="hidden" value="">
-    </div>
-    <hr><hr>
+ <button class="btn btn-info btn-sm btn-prog-msj" data-toggle="modal" data-target="#modal_evento"><i class="fa fa-clock-o" ></i> Programar cita</button>
+ <button class="btn btn-warning btn-sm btn-prog-msj" data-toggle="modal" data-target="#modal_calendario"><i class="fa fa-calendar" ></i> Mi calendario</button>
     <h4 class="text-center color-rosa text-uppercase" id="nom_chat">
         NOMBRE DEL USUARIO
-    </h4>
-    <div id="respuesta-chat" style="height: 450px;overflow: auto;">
+     </h4>
+    <div id="respuesta-chat" style="height: 400px;overflow: auto;">
+
         <div class="col-md-12">
             <div class="pull-left">
                 <div class="col-md-2">
@@ -112,12 +107,94 @@
             </div>
         </div>
     </div>
+    <hr>
 
+    <div class="form-group" id="chat_control">
 
-
-
-
+        <div class="col-md-10">
+          <textarea class="form-control" cols="40" rows="1" style="resize: vertical;" disabled="true"></textarea>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-rosa" disabled="true"><i class="fa fa-send"></i> Enviar</button>
+        </div>
+        <input type="hidden" value="">
+    </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="modal_evento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center text-uppercase color-rosa" id="myModalLabel">Sincronizar evento con el usuario</h4>
+      </div>
+      <div class="modal-body">
+
+      {!! Form::open(['route'=>['eventos.store'],'method'=>'POST']) !!}
+      <div class="row">
+      <div class="col-md-4 text-center" >
+        <span class="text-uppercase color-rosa" id="nombre_modal" style="font-size: 12px;">Juan camilo camacho</span>
+        <img id="imagen_modal" src="{{ url('img/profile.ico') }}" alt="" class="img-responsive img-circle">
+        <input type="hidden" id="modal_id" name="user_id">
+      </div>
+      <div class="col-md-8">
+        <div class="form-group">
+                <label for="">Titulo para el evento</label>
+            <div class="form-inline">
+                <input type="text" class="form-control" name="nombre_evento" id="mi_titulo">
+                <input type="hidden" name="mi_color" id="mi_color" value="#ebbfbf">
+                <button class="btn btn-info jscolor {valueElement:'mi_color',styleElement:'mi_titulo'}"><i class="fa fa-eyedropper"></i></button>
+            </div>
+            </div>
+                <label for="">Inicio evento</label> 
+                {!! Form::checkbox('dia_completo') !!} Estaras en este evento todo el día<br>
+            <div class="form-inline">
+                <input class="form-control" type="text" id="datepicker" name="f_ini">
+                <input class="form-control" type="time" value="12:03" name="h_ini"> (24H)<br>
+            </div>
+                <label for="">Fin evento</label>
+            <div class="form-inline">
+                <input class="form-control" type="text" id="datepicker2" name="f_fin">
+                <input class="form-control" type="time" value="12:03" name="h_fin"> (24H)<br>
+            </div>
+            <br>
+            
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+            <label for="descripcion">Descripcion Eventos</label>
+              <textarea name="descripcion" id="" cols="30" rows="10" class="form-control" placeholder="Ejemplo: El evento es en la direccion XXX con el señor YYYY"></textarea>
+            </div>
+        </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </div>
+      {!! form::close() !!}
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="modal_calendario" tabindex="-1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center text-uppercase color-rosa" id="myModalLabel">Mi calendario de eventos</h4>
+      </div>
+      <div class="modal-body">
+            {!! $calendario->calendar() !!}
+            {!! $calendario->script() !!}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 @endsection

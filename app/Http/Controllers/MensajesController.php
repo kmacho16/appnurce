@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Chat;
+use App\Eventos;
 use App\historial_chat;
 
 use Auth;
@@ -25,7 +26,34 @@ class MensajesController extends Controller
          ->where([['historial_chat.id_user',Auth::user()->id],['historial_chat.leido',false] ])
          ->orwhere([['historial_chat.to_id_user',Auth::user()->id],['historial_chat.leido',false] ])
          ->orderby('historial_chat.id','DESC')->get();
-        return view('mensajes.index',['mensajes'=>$mensajes]);
+
+         $events = [];
+
+         
+         $eventos = Eventos::select('nombre_evento','dia_completo','fecha_inicio','fecha_fin','id','color')->get();
+         foreach ($eventos as $evento) {
+         $events[] = \Calendar::event(
+             $evento->nombre_evento, //event title
+             $evento->dia_completo, //full day event?
+             $evento->fecha_inicio, //start time (you can also use Carbon instead of DateTime)
+             $evento->fecha_fin, //end time (you can also use Carbon instead of DateTime)
+             $evento->id, //optionally, you can specify an event ID
+              //optional event ID
+             [
+                 'url' => route('eventos.edit', $evento->id),
+                 'color'=>'#'.$evento->color,
+             ]
+         );            
+         }
+
+         $calendario = \Calendar::addEvents($events) //add an array with addEvents
+             ->setOptions([ //set fullcalendar options
+                 'firstDay' => 1,
+             ])->setCallbacks([]); 
+
+
+
+        return view('mensajes.index',['mensajes'=>$mensajes,'calendario'=>$calendario]);
     }
 
     /**

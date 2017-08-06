@@ -38,6 +38,8 @@ public function __construct(){
         return view("users.index",['user'=>$usuario,'roles'=>$roles]);
     }
 
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -48,6 +50,12 @@ public function __construct(){
 
         $roles = DB::table('roles')->pluck('rol','id');
         return view("users.create",['roles'=>$roles]);
+    }
+
+    public function indexAPI(){
+        $usuario  = User::select("*")->where('id',Auth::user()->id)->get();//find();
+        //dd($usuario->all());
+        return Response()->json(['data'=>$usuario],200,[],JSON_NUMERIC_CHECK);
     }
 
     /**
