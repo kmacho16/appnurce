@@ -15,7 +15,7 @@ class ubicaciones extends Model
     ];
 
     public static function CalculaPuntos($lat,$lng,$box,$distance){
-        $mlat = (float)$lat;
+        $mlat = (float) str_replace("$","", $lat);
 
         $consulta = "";
         if (Auth::check()) {
