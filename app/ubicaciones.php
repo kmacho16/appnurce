@@ -43,7 +43,7 @@ class ubicaciones extends Model
                 * COS(RADIANS(cast(? as double precision)) ))) AS distancia 
                 from ubicaciones inner join users on ubicaciones.id_user = users.id and users.id_rol = 2 ".$consulta."  
                where (latitud between ? and ? ) and (longitud between ? and ? )
-               group by  users.id 
+               group by  users.id,ubicaciones.id
                order by distancia ASC",[$mlat,$mlng,$mlat,$box['min_lat'],$box['max_lat'],$box['min_lng'],$box['max_lng']]);//DESActive el STRICT
     	return $ubicaciones;
     }
