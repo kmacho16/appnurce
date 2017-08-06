@@ -22,11 +22,11 @@ class ubicaciones extends Model
         }
         
     	$ubicaciones =DB::select("select ubicaciones.id,users.name,users.foto_perfil as img_perfil,nombre,id_user,latitud,longitud,(6371 * ACOS( 
-    	                                    SIN(radians(latitud)) 
-    	                                    * SIN(radians(?)) 
-    	                                    + COS(radians(longitud - ?)) 
-    	                                    * COS(radians(latitud)) 
-    	                                    * COS(radians(?))
+    	                                    SIN(RADIANS(latitud)) 
+    	                                    * SIN(RADIANS(cast (lat1 as double ?))) 
+    	                                    + COS(RADIANS(longitud - ?)) 
+    	                                    * COS(RADIANS(latitud)) 
+    	                                    * COS(RADIANS(?))
     	                                    )
     	                       ) AS distancia 
     	                       from ubicaciones inner join users on ubicaciones.id_user = users.id and users.id_rol = 2 ".$consulta."  
@@ -34,7 +34,7 @@ class ubicaciones extends Model
     	                       and (longitud between ? and ? )
                                group by  users.id 
     	                       having distancia < ? 
-    	                       order by distancia ASC",[(float)$lat,(float)$lng,(float)$lat,(float)$box['min_lat'],(float)$box['max_lat'],(float)$box['min_lng'],(float)$box['max_lng'],(float)$distance]);//DESActive el STRICT
+    	                       order by distancia ASC",[$lat,$lng,$lat,$box['min_lat'],$box['max_lat'],$box['min_lng'],$box['max_lng'],$distance]);//DESActive el STRICT
     	return $ubicaciones;
     }
 
@@ -62,4 +62,4 @@ class ubicaciones extends Model
     }
 }
 
-/*select ubicaciones.id,users.name,users.foto_perfil as img_perfil,nombre,id_user,latitud,longitud,(6371 * ACOS( SIN(radians(latitud)) * SIN(radians(4.682764486812419)) + COS(radians(longitud - -74.07964969389036)) * COS(radians(latitud)) * COS(radians(4.682764486812419)) ) ) AS distancia from ubicaciones inner join users on ubicaciones.id_user = users.id and users.id_rol = 2 where (latitud between 4.6377984065165 and 4.7277305671084 ) and (longitud between -74.124766374046 and -74.034533013735 ) having distancia < 5 order by distancia ASC*/
+/*select ubicaciones.id,users.name,users.foto_perfil as img_perfil,nombre,id_user,latitud,longitud,(6371 * ACOS( SIN(RADIANS(latitud)) * SIN(RADIANS(4.682764486812419)) + COS(RADIANS(longitud - -74.07964969389036)) * COS(RADIANS(latitud)) * COS(RADIANS(4.682764486812419)) ) ) AS distancia from ubicaciones inner join users on ubicaciones.id_user = users.id and users.id_rol = 2 where (latitud between 4.6377984065165 and 4.7277305671084 ) and (longitud between -74.124766374046 and -74.034533013735 ) having distancia < 5 order by distancia ASC*/
