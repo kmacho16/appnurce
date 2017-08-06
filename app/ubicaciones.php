@@ -16,7 +16,7 @@ class ubicaciones extends Model
 
     public static function CalculaPuntos($lat,$lng,$box,$distance){
         $mlat = (float) str_replace("$","", $lat);
-
+        $mlng = (float) str_replace("$","", $lng);
         $consulta = "";
         if (Auth::check()) {
             $consulta = "and  users.id != ".Auth::user()->id; 
@@ -50,7 +50,7 @@ class ubicaciones extends Model
                                    and (longitud between ? and ? )
                                    group by  users.id 
                                    having distancia < ? 
-                                   order by distancia ASC",[(float)deg2rad($mlat),$lng,$lat,$box['min_lat'],$box['max_lat'],$box['min_lng'],$box['max_lng'],$distance]);//DESActive el STRICT
+                                   order by distancia ASC",[(float)deg2rad($mlat),$mlng,$mlat,$box['min_lat'],$box['max_lat'],$box['min_lng'],$box['max_lng'],$distance]);//DESActive el STRICT
     	return $ubicaciones;
     }
 
