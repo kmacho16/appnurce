@@ -42,7 +42,7 @@ class ubicaciones extends Model
                                                 SIN(RADIANS(cast(latitud as double precision)) 
                                                 * SIN(RADIANS(?)) 
                                                 + COS(RADIANS(longitud - ?)) 
-                                                * COS(RADIANS(latitud)) 
+                                                * COS(RADIANS(cast(latitud as double precision)) 
                                                 * COS(RADIANS(?))
                                                 )
                                    ) AS distancia 
