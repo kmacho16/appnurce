@@ -23,4 +23,5 @@ Route::middleware('auth:api')->group(function () {
    	Route::GET('usuario','Api\ApiController@userApi');   
 	Route::post('usuario/editar','Api\ApiController@editUser');
 	Route::post('personal/find','Api\ApiController@findPersonal');
+	Route::post('personal/prfile','Api\ApiController@findPersonal');
 });

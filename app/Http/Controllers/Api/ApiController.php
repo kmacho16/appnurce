@@ -62,4 +62,9 @@ class ApiController extends Controller
         return Response()->json(['data'=>$ubicaciones],200,[],JSON_NUMERIC_CHECK);
 
     }
+    public function findProfile(Request $request){
+        $usuario  = User::select("*")->where('id',$request->id_profile)->get();//find();
+        //dd($usuario->all());
+        return Response()->json(['data'=>$usuario],200,[],JSON_NUMERIC_CHECK);
+    }
 }
