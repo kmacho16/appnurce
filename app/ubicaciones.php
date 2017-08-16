@@ -22,20 +22,20 @@ class ubicaciones extends Model
         }
         
         $ubicaciones =DB::select("select ubicaciones.id,users.name,users.foto_perfil as img_perfil,nombre,id_user,latitud,longitud,(6371 * ACOS( 
-                                            SIN(RADIANS(latitud)) 
-                                            * SIN(RADIANS(?)) 
-                                            + COS(RADIANS(longitud - ?)) 
-                                            * COS(RADIANS(latitud)) 
-                                            * COS(RADIANS(?))
-                                            )
-                               ) AS distancia 
-                               from ubicaciones inner join users on ubicaciones.id_user = users.id and users.id_rol = 2 ".$consulta."  
-                               where (latitud between ? and ? )
-                               and (longitud between ? and ? )
-                               group by  users.id 
-                               having distancia < ? 
-                               order by distancia ASC",[$lat,$lng,$lat,$box['min_lat'],$box['max_lat'],$box['min_lng'],$box['max_lng'],$distance]);//DESActive el STRICT
-        return $ubicaciones;
+            SIN(RADIANS(latitud)) 
+            * SIN(RADIANS(?)) 
+            + COS(RADIANS(longitud - ?)) 
+            * COS(RADIANS(latitud)) 
+            * COS(RADIANS(?))
+            )
+            ) AS distancia 
+            from ubicaciones inner join users on ubicaciones.id_user = users.id and users.id_rol = 2 ".$consulta."  
+            where (latitud between ? and ? )
+            and (longitud between ? and ? )
+            group by users.id 
+            having distancia < ? 
+            order by distancia ASC",[$lat,$lng,$lat,$box['min_lat'],$box['max_lat'],$box['min_lng'],$box['max_lng'],$distance]);//DESActive el STRICT
+            return $ubicaciones;
     }
 
     public static function getBoundaries($lat,$lng,$distance = 1, $eartradious = 6371){

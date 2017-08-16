@@ -19,8 +19,8 @@ Route::post('refresh','Api\Auth\LoginController@refresh');
 
 
 Route::middleware('auth:api')->group(function () {
-   	Route::post('logout','Api\Auth\LoginController@logout');
    	Route::GET('usuario','Api\ApiController@userApi');   
+   	Route::post('logout','Api\Auth\LoginController@logout');
 	Route::post('usuario/editar','Api\ApiController@editUser');
 	Route::post('personal/find','Api\ApiController@findPersonal');
 	Route::post('personal/profile','Api\ApiController@findProfile');
