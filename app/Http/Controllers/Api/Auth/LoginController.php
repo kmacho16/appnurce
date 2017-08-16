@@ -28,6 +28,12 @@ class LoginController extends Controller
     		'password'=>'required'
     		]);
 
+        $user = user::where('email',$request->username)->first();
+        $user->token_firebase = $request->token_firebase;
+        $user->save();
+        /*echo $user;
+        exit();*/
+
     	return $this->issueToken($request,'password');
 
     	/*$params = 	[

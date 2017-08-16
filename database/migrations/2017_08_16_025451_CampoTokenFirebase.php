@@ -27,6 +27,6 @@ class CampoTokenFirebase extends Migration
     {
         Schema::table('users',function(Blueprint $table){
             $table->dropColumn('token_firebase');
-        });
+        }); 
     }
 }
