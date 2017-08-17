@@ -37,6 +37,7 @@ class RegisterController extends Controller
     	$user = new User();
     	$user->name=$request->name;
     	$user->email=$request->email;
+        $user->token_firebase=$request->token_firebase;
     	$user->password=bcrypt($request->password);
     	$user->save();
 

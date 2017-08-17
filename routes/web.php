@@ -27,6 +27,7 @@ Route::get('/profile','UserController@showProfile');
 Route::resource('/usuarios','UserController');
 Route::resource('/ubicaciones','ubicacionesController');
 Route::resource('/mensajes','MensajesController');
+Route::get('/msj/send','MensajesController@send');
 Route::resource('/eventos','eventosController');
 
 Route::get('/ubicacion/{id}','ubicacionesController@createLocation');

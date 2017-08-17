@@ -86,6 +86,37 @@ class MensajesController extends Controller
                 $id_chat = Chat::insertGetId(['id' => '']);
                 $mensaje = "Un usuario ha solicitado tu informacion, sus datos de su servicio son los siguientes: <br> <strong>Fecha del servicio:</strong> $request->fecha <br> <strong>Direccion:</strong> $request->direccion <br> <strong>Observaciones:</strong> $request->comentario";
             }
+            $to_usuario = User::find($request->id_user);
+
+            if ($to_usuario->token_firebase) {
+                $url = 'https://fcm.googleapis.com/fcm/send';
+                $fields = array(
+                     'to' => $to_usuario->token_firebase,
+                     'data' => ["mensaje"=>$mensaje]
+                    );
+                $headers = array(
+                    'Authorization:key = AAAAa6yZpc4:APA91bHGQIOORGgj18Yjbm-k9JvnqYRf0Kjfzy2q4H12HqSvwpYakmN31v0skT2GCElsCR7zBeSzeaypUbmpfO4yDaS9Zb3UBOWdgJ1Q8rKQ2A1265jV4x0BCKn7qFq6pqzpeajpPnHe',
+                    'Content-Type:application/json'
+                    );
+
+                $ch = curl_init();
+               curl_setopt($ch, CURLOPT_URL, $url);
+               curl_setopt($ch, CURLOPT_POST, true);
+               curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+               curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+               curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);  
+               curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+               curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+               $result = curl_exec($ch);           
+               if ($result === FALSE) {
+                   die('Curl failed: ' . curl_error($ch));
+               }
+               curl_close($ch);
+                //return $result;
+                //return json_encode($user);
+            }
+
+
             //return $mensaje;
             $mi_mensaje = new historial_chat;
             $mi_mensaje->id_chat = $id_chat;
@@ -139,5 +170,36 @@ class MensajesController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function send(Request $request)
+    {
+        $user = User::find(5);
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $fields = array(
+             'to' => $user->token_firebase,
+             'data' => ["mensaje"=>"Una cosa"]
+            );
+        $headers = array(
+            'Authorization:key = AAAAa6yZpc4:APA91bHGQIOORGgj18Yjbm-k9JvnqYRf0Kjfzy2q4H12HqSvwpYakmN31v0skT2GCElsCR7zBeSzeaypUbmpfO4yDaS9Zb3UBOWdgJ1Q8rKQ2A1265jV4x0BCKn7qFq6pqzpeajpPnHe',
+            'Content-Type:application/json'
+            );
+
+        $ch = curl_init();
+       curl_setopt($ch, CURLOPT_URL, $url);
+       curl_setopt($ch, CURLOPT_POST, true);
+       curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+       curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);  
+       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+       curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+       $result = curl_exec($ch);           
+       if ($result === FALSE) {
+           die('Curl failed: ' . curl_error($ch));
+       }
+       curl_close($ch);
+       return $result;
+        
+        
+        return json_encode($user);
     }
 }
