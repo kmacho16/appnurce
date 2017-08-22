@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use App\User;
+use App\historial_chat;
 use Auth;
 use DB;
 
@@ -25,8 +26,6 @@ class ApiController extends Controller
     }
 
     public function editUser(Request $request){
-
-
         $this->validate($request,['name'=>['required','min:3'],'email'=>['required',Rule::unique('users')->ignore(Auth::user()->id)]]);
         $user  = User::find(Auth::user()->id);
         $user->name = $request->name;
@@ -66,5 +65,10 @@ class ApiController extends Controller
         $usuario  = User::select("*")->where('id',$request->id_profile)->get();//find();
         //dd($usuario->all());
         return Response()->json(['data'=>$usuario],200,[],JSON_NUMERIC_CHECK);
+    }
+
+    public function chatAll(){
+        $mensajes  = historial_chat::ultimosMensajes();        
+        return Response()->json(['data'=>$mensajes],200,[],JSON_NUMERIC_CHECK);
     }
 }
