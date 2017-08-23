@@ -68,7 +68,13 @@ class ApiController extends Controller
     }
 
     public function chatAll(){
-        $mensajes  = historial_chat::ultimosMensajes();        
+        $mensajes  = historial_chat::ultimosMensajes();     
         return Response()->json(['data'=>$mensajes],200,[],JSON_NUMERIC_CHECK);
+    }
+
+    public function chatPersonal(Request $request){
+        $mensajes = historial_chat::mensajesFromUser($request->id);
+        return Response()->json(['data'=>$mensajes],200,[],JSON_NUMERIC_CHECK);
+
     }
 }

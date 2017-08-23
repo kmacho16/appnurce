@@ -13,10 +13,7 @@ use Auth;
 class AjaxController extends Controller
 {
     public function consultaChat(Request $request){
-    	$mensajes = historial_chat::select('historial_chat.*','users.foto_perfil')
-    	->join('users','id_user','users.id')
-    	->where('id_chat',$request->id)->orderBy('id','DESC')->limit(10)->get();
-
+    	$mensajes = historial_chat::mensajesFromUser($request->id);
     	return response()->json($mensajes->toArray());
     }
 
@@ -68,9 +65,6 @@ class AjaxController extends Controller
                 //return $result;
                 //return json_encode($user);
             }
-
-
-
 
         $mi_mensaje->save();
         return  "Ok";
