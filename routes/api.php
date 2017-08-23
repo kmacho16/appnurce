@@ -27,5 +27,5 @@ Route::middleware('auth:api')->group(function () {
 
 
 	Route::get('chat/all','Api\ApiController@chatAll');
-	Route::get('chat/personal','Api\ApiController@chatPersonal');
+	Route::post('chat/personal','Api\ApiController@chatPersonal');
 });
