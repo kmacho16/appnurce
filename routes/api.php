@@ -28,4 +28,6 @@ Route::middleware('auth:api')->group(function () {
 
 	Route::get('chat/all','Api\ApiController@chatAll');
 	Route::post('chat/personal','Api\ApiController@chatPersonal');
+	Route::post('chat/mensaje','Api\ApiController@sendMensaje');
+
 });

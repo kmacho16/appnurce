@@ -75,6 +75,58 @@ class ApiController extends Controller
     public function chatPersonal(Request $request){
         $mensajes = historial_chat::mensajesFromUser($request->id);
         return Response()->json(['data'=>$mensajes],200,[],JSON_NUMERIC_CHECK);
+    }
 
+    public function sendMensaje(Request $request){
+        $id_chat = $request->id_chat;
+        $to_id_user = $request->to_id_user;
+        $mensaje = $request->mensaje;
+
+
+        $mensaje_previo = historial_chat::where('id_chat',$id_chat)->orderby('id','DESC')->first();
+        $mensaje_previo->leido = true;
+        $mensaje_previo->save();
+
+        
+
+        
+        $mi_mensaje = new historial_chat;
+        $mi_mensaje->id_chat = $id_chat;
+
+        $mi_mensaje->id_user = Auth::user()->id; 
+        $mi_mensaje->to_id_user = $to_id_user;
+        $mi_mensaje->mensaje = $mensaje;
+
+        $to_usuario = User::find($to_id_user);
+        if ($to_usuario->token_firebase) {
+                $url = 'https://fcm.googleapis.com/fcm/send';
+                $fields = array(
+                     'to' => $to_usuario->token_firebase,
+                     'data' => ["mensaje"=>$mensaje]
+                    );
+                $headers = array(
+                    'Authorization:key = AAAAa6yZpc4:APA91bHGQIOORGgj18Yjbm-k9JvnqYRf0Kjfzy2q4H12HqSvwpYakmN31v0skT2GCElsCR7zBeSzeaypUbmpfO4yDaS9Zb3UBOWdgJ1Q8rKQ2A1265jV4x0BCKn7qFq6pqzpeajpPnHe',
+                    'Content-Type:application/json'
+                    );
+
+                $ch = curl_init();
+               curl_setopt($ch, CURLOPT_URL, $url);
+               curl_setopt($ch, CURLOPT_POST, true);
+               curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+               curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+               curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);  
+               curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+               curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+               $result = curl_exec($ch);           
+               if ($result === FALSE) {
+                   die('Curl failed: ' . curl_error($ch));
+               }
+               curl_close($ch);
+                //return $result;
+                //return json_encode($user);
+            }
+        $mi_mensaje->save();
+        
+        return Response()->json(["respuesta"=>"ok","state"=>200]);
     }
 }

@@ -18,10 +18,13 @@ class AjaxController extends Controller
     }
 
     public function enviarMensaje(Request $request){
+        //return "Hola";
 
         $ids = explode('-', $request->ids);
            
-        $mensaje_previo = historial_chat::find($ids[2]);
+        $mensaje_previo = historial_chat::where('id_chat',$ids[0])->orderby('id','DESC')->first();
+
+
         $mensaje_previo->leido = true;
         $mensaje_previo->save();
 
