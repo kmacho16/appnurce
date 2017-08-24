@@ -32,7 +32,7 @@ class historial_chat extends Model
     public static function mensajesFromUser($id){
     	$mensajes = DB::table('historial_chat')->select('historial_chat.*','users.foto_perfil')
         ->join('users','id_user','users.id')
-        ->where('id_chat',$id)->orderBy('id','DESC')->limit(10)->get();
+        ->where('id_chat',$id)->orderBy('id','DESC')->limit(20)->get();
         return $mensajes;
     }
 
