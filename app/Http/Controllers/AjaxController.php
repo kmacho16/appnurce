@@ -45,7 +45,7 @@ class AjaxController extends Controller
                 $url = 'https://fcm.googleapis.com/fcm/send';
                 $fields = array(
                      'to' => $to_usuario->token_firebase,
-                     'data' => ["mensaje"=>$mensaje]
+                     'data' => ["mensaje"=>$mensaje,"id_chat"=>$id_chat,"to_id_user"=>Auth::user()->id]
                     );
                 $headers = array(
                     'Authorization:key = AAAAa6yZpc4:APA91bHGQIOORGgj18Yjbm-k9JvnqYRf0Kjfzy2q4H12HqSvwpYakmN31v0skT2GCElsCR7zBeSzeaypUbmpfO4yDaS9Zb3UBOWdgJ1Q8rKQ2A1265jV4x0BCKn7qFq6pqzpeajpPnHe',
