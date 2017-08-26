@@ -28,6 +28,7 @@ class ApiController extends Controller
     public function editUser(Request $request){
         $this->validate($request,['name'=>['required','min:3'],'email'=>['required',Rule::unique('users')->ignore(Auth::user()->id)]]);
         $user  = User::find(Auth::user()->id);
+        
         $user->name = $request->name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
@@ -39,13 +40,13 @@ class ApiController extends Controller
             $user->password = bcrypt($request->password);
         }
 
-       /* if(empty($request->foto_perfil)){
+       if(empty($request->foto_perfil)){
             $user->foto_perfil = null;
         }else{
         	$miFoto = base64_decode($request->foto_perfil);
-        	file_put_contents('/uploads/archivo.jpg', $miFoto);
+        	file_put_contents('uploads/archivo.jpg', $miFoto);
             //$user->foto_perfil = $request->file($miFoto)->store('usuarios'); 
-        }*/
+        }
 
         $user->save();
         return Response()->json(["respuesta"=>"ok","state"=>200]);
