@@ -30,4 +30,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('chat/personal','Api\ApiController@chatPersonal');
 	Route::post('chat/mensaje','Api\ApiController@sendMensaje');
 
+
+	Route::post('ubicaciones/personal','Api\ApiController@ubicacionesPersonal');
+
 });

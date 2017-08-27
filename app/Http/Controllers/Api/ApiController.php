@@ -85,13 +85,9 @@ class ApiController extends Controller
         $to_id_user = $request->to_id_user;
         $mensaje = $request->mensaje;
 
-
         $mensaje_previo = historial_chat::where('id_chat',$id_chat)->orderby('id','DESC')->first();
         $mensaje_previo->leido = true;
-        $mensaje_previo->save();
-
-        
-
+        $mensaje_previo->save();    
         
         $mi_mensaje = new historial_chat;
         $mi_mensaje->id_chat = $id_chat;
@@ -112,24 +108,29 @@ class ApiController extends Controller
                     'Content-Type:application/json'
                     );
 
-                $ch = curl_init();
-               curl_setopt($ch, CURLOPT_URL, $url);
-               curl_setopt($ch, CURLOPT_POST, true);
-               curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-               curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-               curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);  
-               curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-               curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-               $result = curl_exec($ch);           
-               if ($result === FALSE) {
-                   die('Curl failed: ' . curl_error($ch));
-               }
-               curl_close($ch);
-                //return $result;
-                //return json_encode($user);
-            }
+            $ch = curl_init();
+           curl_setopt($ch, CURLOPT_URL, $url);
+           curl_setopt($ch, CURLOPT_POST, true);
+           curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+           curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+           curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);  
+           curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+           curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+           $result = curl_exec($ch);           
+           if ($result === FALSE) {
+               die('Curl failed: ' . curl_error($ch));
+           }
+           curl_close($ch);
+            //return $result;
+            //return json_encode($user);
+        }
         $mi_mensaje->save();
         
         return Response()->json(["respuesta"=>"ok","state"=>200]);
+    }
+
+    public function ubicacionesPersonal(Request $request){
+        $misUbicaciones = ubicaciones::where('id_user',Auth::user()->id)->get();
+        return Response()->json(['data'=>$misUbicaciones],200,[],JSON_NUMERIC_CHECK);
     }
 }
