@@ -44,3 +44,4 @@ Route::delete('filesUserDestroy/{id_campo}','UserController@filesDestroy');
 /* RUTAS PARA LOS AJAX**/
 Route::post('consultarChat','AjaxController@consultaChat');
 Route::post('enviarMensaje','AjaxController@enviarMensaje');
+

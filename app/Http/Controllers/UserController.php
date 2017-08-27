@@ -76,7 +76,7 @@ public function __construct(){
         $user->id_rol = $request->id_rol;
 
         if(empty($request->foto_perfil)){
-            $user->foto_perfil = null;
+            $user->foto_perfil = $user->foto_perfil;
         }else{
             $user->foto_perfil = $request->file('foto_perfil')->store('usuarios'); 
         }

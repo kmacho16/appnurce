@@ -41,11 +41,11 @@ class ApiController extends Controller
         }
 
        if(empty($request->foto_perfil)){
-            $user->foto_perfil = null;
+            $user->foto_perfil = $user->foto_perfil;
         }else{
         	$miFoto = base64_decode($request->foto_perfil);
-        	file_put_contents('uploads/archivo.jpg', $miFoto);
-            //$user->foto_perfil = $request->file($miFoto)->store('usuarios'); 
+        	file_put_contents('../../../../public/uploads/usuarios/'.$user->id.'.jpg', $miFoto);
+            $user->foto_perfil = "usuarios/".$user->id.".jpg";
         }
 
         $user->save();
