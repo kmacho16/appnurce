@@ -14,6 +14,7 @@ use App\ubicaciones;
 
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Client;
+use Illuminate\Support\Facades\Storage;
 
 class ApiController extends Controller
 {
@@ -40,9 +41,10 @@ class ApiController extends Controller
             $user->password = bcrypt($request->password);
         }
 
-       if(empty($request->foto_perfil)){
-            $user->foto_perfil = null;
+       if(empty($request->foto_perfil) || $request->foto_perfil==''){
+            $user->foto_perfil = $user->foto_perfil;
         }else{
+            Storage::delete($user->foto_perfil);
         	$miFoto = base64_decode($request->foto_perfil);
         	file_put_contents('../public/uploads/usuarios/'.$user->id.'.jpg', $miFoto);
             $user->foto_perfil = "usuarios/".$user->id.".jpg";
