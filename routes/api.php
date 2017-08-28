@@ -33,5 +33,6 @@ Route::middleware('auth:api')->group(function () {
 
 	Route::get('ubicaciones/personal','Api\ApiController@ubicacionesPersonal');
 	Route::post('ubicaciones/store','Api\ApiController@storeUbicaciones');
+	Route::post('ubicaciones/delete','Api\ApiController@deleteUbicaciones');
 
 });

@@ -142,4 +142,10 @@ class ApiController extends Controller
         $ubicacion->save();
         return Response()->json(["respuesta"=>"ok","state"=>200]);
     }
+
+    public function deleteUbicaciones(Request $request){
+        $ubicacion = ubicaciones::find($request->id);
+        $ubicacion->delete();
+        return Response()->json(["respuesta"=>"ok","state"=>200]);
+    }
 }
