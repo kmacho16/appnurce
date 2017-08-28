@@ -133,4 +133,13 @@ class ApiController extends Controller
         $misUbicaciones = ubicaciones::where('id_user',Auth::user()->id)->get();
         return Response()->json(['data'=>$misUbicaciones],200,[],JSON_NUMERIC_CHECK);
     }
+    public function storeUbicaciones(Request $request){
+        $ubicacion = new ubicaciones();
+        $ubicacion->id_user = Auth::user()->id;
+        $ubicacion->latitud = $request->latitud;
+        $ubicacion->longitud = $request->longitud;        
+        $ubicacion->nombre = $request->nombre;
+        $ubicacion->save();
+        return Response()->json(["respuesta"=>"ok","state"=>200]);
+    }
 }
