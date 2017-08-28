@@ -32,6 +32,6 @@ Route::middleware('auth:api')->group(function () {
 
 
 	Route::get('ubicaciones/personal','Api\ApiController@ubicacionesPersonal');
-	Route::get('ubicaciones/store','Api\ApiController@storeUbicaciones');
+	Route::post('ubicaciones/store','Api\ApiController@storeUbicaciones');
 
 });
