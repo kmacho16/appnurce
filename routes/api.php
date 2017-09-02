@@ -36,5 +36,6 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('ubicaciones/delete','Api\ApiController@deleteUbicaciones');
 
 	Route::get('eventos/personal','Api\ApiController@eventosUsuario');
+	Route::get('eventos/day','Api\ApiController@eventosDay');
 
 });

@@ -152,6 +152,11 @@ class ApiController extends Controller
     public function eventosUsuario(){
         $misEventos = Eventos::select('id','nombre_evento','color','fecha_inicio')->where('id_user',Auth::user()->id)->get();
         return Response()->json(['data'=>$misEventos],200,[],JSON_NUMERIC_CHECK);
+    }
+    public function eventosDay(Request $request){
+        $eventosDia = DB::select('select id,nombre_evento,color,fecha_inicio from eventos where id_user = ? and date(fecha_inicio) = ? ',[Auth::user()->id,$request->fecha]);
 
+       //$eventosDia = Eventos::select('id','nombre_evento','color','fecha_inicio')->where('id_user',Auth::user()->id)->where('fecha_inicio','=',$request->fecha)->get();
+        return Response()->json(['data'=>$eventosDia],200,[],JSON_NUMERIC_CHECK);
     }
 }
