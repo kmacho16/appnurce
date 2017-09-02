@@ -7,11 +7,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use App\User;
 use App\historial_chat;
+use App\ubicaciones;
+use App\Eventos;
+
 use Auth;
 use DB;
-
-use App\ubicaciones;
-
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Client;
 use Illuminate\Support\Facades\Storage;
@@ -147,5 +147,11 @@ class ApiController extends Controller
         $ubicacion = ubicaciones::find($request->id);
         $ubicacion->delete();
         return Response()->json(["respuesta"=>"ok","state"=>200]);
+    }
+
+    public function eventosUsuario(){
+        $misEventos = Eventos::select('id','nombre_evento','color','fecha_inicio')->where('id_user',Auth::user()->id)->get();
+        return Response()->json(['data'=>$misEventos],200,[],JSON_NUMERIC_CHECK);
+
     }
 }
