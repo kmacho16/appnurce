@@ -78,7 +78,7 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <div class="title m-b-md">
-                    Bienvenido a NurceAppXXXXXXXXXXXx
+                    Bienvenido a NurceApp
                 </div>
 
                 <div class="links">
